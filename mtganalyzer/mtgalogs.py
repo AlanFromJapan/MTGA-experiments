@@ -14,15 +14,36 @@ class MtgaMatch:
     matchEnd = datetime.max
     opponentName = "**unknown**"
     opponentTeamId = -1
-    matchOutcomeForYou = ""
+    matchOutcomeForYou = "?"
+    deck = None
+
+    def __init__(self, matchId, matchStart, opponentName, opponentTeamId) -> None:
+        self.matchId = matchId
+        self.matchStart = matchStart
+        self.opponentName = opponentName
+        self.opponentTeamId = opponentTeamId
+
+    def setDeck(self, d):
+        self.deck = d
+
+    def setMatchEnd(self, endTime, outcome):
+        self.matchEnd = endTime
+        self.matchOutcomeForYou = outcome
+
+    def __repr__(self) -> str:
+        return "Played %s at %s with deck '%s' (team #%s) with result '%s' for you. [match ID='%s']" %(self.opponentName, self.matchStart, self.deck if self.deck != None else "**Unknown deck**" , self.opponentTeamId, self.matchOutcomeForYou, self.matchId)
 
 
 class MtgaDeck:
     name = "**unnamed**"
-    titleCardArenaID = -1
+    tileCardArenaID = -1
     totalWins = -1
     totalLoss = -1
 
+    def __init__(self, name, tileCardId) -> None:
+        self.name = name
+        self.tileCardArenaID = tileCardId
+        
 
 
 class MtgaLogScanner:
@@ -35,11 +56,14 @@ class MtgaLogScanner:
     REGEX_Gold='"Gold\\\\\D+(?P<gold>\d+)'
     REGEX_Gems='"Gems\\\\\D+(?P<gems>\d+)'
     REGEX_Deckname='"Name\\\\\W+\"(?P<name>[^\\\\]+)'
+    REGEX_Decktile='"DeckTileId\\\\\D+(?P<id>\d+)'
+    
 
     rePlayername = re.compile(REGEX_Playername)
     reGold = re.compile(REGEX_Gold)
     reGems = re.compile(REGEX_Gems)
     reDeckname = re.compile(REGEX_Deckname)
+    reDecktile = re.compile(REGEX_Decktile)
 
 
 
@@ -75,14 +99,15 @@ class MtgaLogScanner:
             #print("%s %s" % (opponent, tim))
             #print(j)
 
-            return [opponentName, tim, matchID, opponentTeam]
+            #return [opponentName, tim, matchID, opponentTeam]
+            return MtgaMatch(matchID, tim, opponentName, opponentTeam)
         else:
             return None
 
     #------------------------------------------------------------------------------------------------------
     # Returns the match END details: result, end-time, matchId
     #
-    def extractMatchEnd(self, l, pMatchID, pOpponentTeamId):
+    def extractMatchEnd(self, l, match : MtgaMatch):
         #search with quotes, that will be the json message
         if '''"MatchGameRoomStateType_MatchCompleted"''' in l:
             #found, now unpack the json message
@@ -92,18 +117,20 @@ class MtgaLogScanner:
             tim = datetime.fromtimestamp(int(j["timestamp"][:10])) #why only first 10 chars? what are the remaining 3? no idea.
             matchID = j["matchGameRoomStateChangedEvent"]["gameRoomInfo"]["gameRoomConfig"]["matchId"]
 
-            if matchID != pMatchID:
-                print("Wrong match: expect %s found %s" % (pMatchID, matchID))
+            if matchID != match.matchId:
+                print("Wrong match: expect %s found %s" % (match.matchId, matchID))
                 return None
             #print(j)
 
             #which team was the winner?
-            if int(res) == int(pOpponentTeamId):
+            if int(res) == int(match.opponentTeamId):
                 res = "Defeat"
             else:
                 res = "Victory"
 
-            return [res, tim, matchID]
+            #return [res, tim, matchID]
+            match.setMatchEnd(tim, res)
+            return match
         else:
             return None
 
@@ -138,9 +165,11 @@ class MtgaLogScanner:
     def extractUsedDeck(self, l):
         if "Event_SetDeck" in l and ":602" in l:
             m = self.reDeckname.search(l)
+            m2 = self.reDecktile.search(l)
             #print("DBG: found deck named " + m.group("name"))
-            return m.group("name")
-            
+            d = MtgaDeck(m.group("name"), m2.group("id"))
+            return d
+
         return None
 
 
@@ -158,10 +187,9 @@ class MtgaLogScanner:
         try:
             i = 1
 
-            lastMatch = ""
-            lastOpponentTeam = 0
             lastGoldAndGem = None
             lastDeck = None
+            lastMatch = None
 
             while True:
                 l = fin.readline()
@@ -173,16 +201,19 @@ class MtgaLogScanner:
                     if de != None:
                         lastDeck = de
 
-                    match = self.extractMatchStart(l)
-                    if match != None:            
-                        print("line %d: Played %s at %s with deck '%s' (team #%s)" %(i,match[0], match[1], lastDeck, match[3] ))
-                        lastMatch = match[2]
-                        lastOpponentTeam = match[3]
+                    lastMatch = self.extractMatchStart(l)
+                    if lastMatch != None:            
+                        print("line %d: %s" %(i,lastMatch))
                         stateMachine = STATE_END
                 elif stateMachine == STATE_END:
-                    match = self.extractMatchEnd(l, lastMatch, lastOpponentTeam)
-                    if match != None:            
-                        print("line %d: %s at %s" %(i,match[0], match[1]))
+                    res = self.extractMatchEnd(l, lastMatch)
+                    if res != None:      
+                        #found a match, so overwrite lastOne      
+                        lastMatch = res
+                        print("line %d: %s" %(i,lastMatch))
+
+                        #and reset
+                        lastMatch = None
                         stateMachine = STATE_START
 
                 gng = self.extractGoldAndGems(l)
