@@ -10,8 +10,11 @@ import time
 
 import config
 
+from mtgaobjects import MtgaDeck, MtgaMatch
 import mtgalib
 import mtgalogs
+import db
+
 
 
 app = Flask(__name__, static_url_path='')
@@ -35,9 +38,19 @@ if __name__ == '__main__':
     print ("My user id " + myPlayerId)
 
     try:
+        #DB setup
+        #db.deleteDB()
+        db.initDB()
+ 
+        #scanner init
         scanner = mtgalogs.MtgaLogScanner(myPlayerId)
-        scanner.scanFile(str(sys.argv[1]))
 
+        #scan (SAMPLE)
+        mlist = scanner.scanFile(str(sys.argv[1]))
+        for m in mlist:
+            db.storeMatch(m)
+
+        #start web interface
         app.debug = True
         app.run(host='0.0.0.0', port=45678, threaded=True)
     finally:

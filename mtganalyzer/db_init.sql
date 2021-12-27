@@ -1,0 +1,14 @@
+--Script to generate the DB structure (sqlite)
+
+CREATE TABLE PROCESSING_HISTORY (
+    FILE_NAME VARCHAR(100) PRIMARY KEY NOT NULL,
+    PROCESS_DT DATETIME NOT NULL
+);
+
+CREATE TABLE MATCH (
+    MATCH_ID varchar(120) PRIMARY KEY NOT NULL,
+    OPPONENT_NAME nvarchar(100),
+    OPPONENT_ID varchar(120),
+    RESULT varchar(20)
+);
+
