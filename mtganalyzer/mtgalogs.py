@@ -21,8 +21,11 @@ class MtgaLogScanner:
     REGEX_Playername='"playerName": "(?P<name>[^"]+)"'
     REGEX_Gold='"Gold\\\\\D+(?P<gold>\d+)'
     REGEX_Gems='"Gems\\\\\D+(?P<gems>\d+)'
+
     REGEX_Deckname='"Name\\\\\W+\"(?P<name>[^\\\\]+)'
     REGEX_Decktile='"DeckTileId\\\\\D+(?P<id>\d+)'
+    REGEX_DeckId='"DeckId\\\\\W+\"(?P<id>[^\\\\]+)'
+    REGEX_DeckMana='"Mana\\\\\W+\"(?P<mana>[^\\\\]+)'
     
 
     rePlayername = re.compile(REGEX_Playername)
@@ -30,6 +33,8 @@ class MtgaLogScanner:
     reGems = re.compile(REGEX_Gems)
     reDeckname = re.compile(REGEX_Deckname)
     reDecktile = re.compile(REGEX_Decktile)
+    reDeckId = re.compile(REGEX_DeckId)
+    reDeckMana = re.compile(REGEX_DeckMana)
 
 
 
@@ -132,8 +137,11 @@ class MtgaLogScanner:
         if "Event_SetDeck" in l and ":602" in l:
             m = self.reDeckname.search(l)
             m2 = self.reDecktile.search(l)
+            m3 = self.reDeckId.search(l)
+            m4 = self.reDeckMana.search(l)
             #print("DBG: found deck named " + m.group("name"))
-            d = MtgaDeck(m.group("name"), m2.group("id"))
+            d = MtgaDeck(m.group("name"), m2.group("id"), m3.group("id"), m4.group("mana"))
+            #print ("DBG: deck " + str(d))
             return d
 
         return None
@@ -171,14 +179,15 @@ class MtgaLogScanner:
 
                     lastMatch = self.extractMatchStart(l)
                     if lastMatch != None:            
-                        print("line %d: %s" %(i,lastMatch))
+                        lastMatch.deck = lastDeck
+                        #print("line %d: %s" %(i,lastMatch))
                         stateMachine = STATE_END
                 elif stateMachine == STATE_END:
                     res = self.extractMatchEnd(l, lastMatch)
                     if res != None:      
                         #found a match, so overwrite lastOne      
                         lastMatch = res
-                        print("line %d: %s" %(i,lastMatch))
+                        #print("line %d: %s" %(i,lastMatch))
 
                         mlist.append(lastMatch)
 

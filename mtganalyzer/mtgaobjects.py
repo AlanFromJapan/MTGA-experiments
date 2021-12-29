@@ -24,15 +24,20 @@ class MtgaMatch:
         self.matchOutcomeForYou = outcome
 
     def __repr__(self) -> str:
-        return "Played %s at %s with deck '%s' (team #%s) with result '%s' for you. [match ID='%s']" %(self.opponentName, self.matchStart, self.deck if self.deck != None else "**Unknown deck**" , self.opponentTeamId, self.matchOutcomeForYou, self.matchId)
+        return "Played %s at %s with deck '%s' (team #%s) with result '%s' for you. [match ID='%s']" %(self.opponentName, self.matchStart, self.deck.name if self.deck != None else "**Unknown deck**" , self.opponentTeamId, self.matchOutcomeForYou, self.matchId)
 
 
 class MtgaDeck:
     name = "**unnamed**"
+    deckId = ""
     tileCardArenaID = -1
-    totalWins = -1
-    totalLoss = -1
+    mana = ""
 
-    def __init__(self, name, tileCardId) -> None:
+    def __init__(self, name, tileCardId, deckId, mana) -> None:
         self.name = name
         self.tileCardArenaID = tileCardId
+        self.mana = mana
+        self.deckId = deckId
+
+    def __repr__(self) -> str:
+        return "Deck '%s' (%s) [tile=%s, id=%s)" %(self.name, self.mana, self.tileCardArenaID, self.deckId)
