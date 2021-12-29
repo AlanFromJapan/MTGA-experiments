@@ -34,10 +34,17 @@ def homepage():
 #---------------------------------------------------------------------------------------
 # Processes 1 file (path to the file)
 def scanOneFile (path):
-    print ("Scanning " + path)
+    if db.fileAlreadyProcessed(path):
+        print("INFO: Skipping already processed '%s'." % (os.path.basename(path)))
+        return
+    
+    print ("INFO: Scanning " + path)
     mlist = scanner.scanFile(path)
     for m in mlist:
         db.storeMatch(m)
+    
+    #and remember
+    db.markFileAsProcessed(path)
 
 ########################################################################################
 ## Main entry point

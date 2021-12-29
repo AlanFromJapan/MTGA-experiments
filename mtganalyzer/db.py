@@ -1,3 +1,4 @@
+import datetime
 import sqlite3
 import os
 
@@ -42,11 +43,42 @@ def storeMatch(m : MtgaMatch):
     conn = sqlite3.connect(DB_FILE)
     try:
         conn.execute('''
-        INSERT INTO MATCH (MATCH_ID, OPPONENT_NAME, RESULT) 
-        SELECT ?, ?, ?
+        INSERT INTO MATCH (MATCH_ID, OPPONENT_NAME, RESULT, MATCH_START, MATCH_END) 
+        SELECT ?, ?, ?, ?, ?
         WHERE NOT EXISTS (SELECT 1 FROM MATCH M2 WHERE M2.MATCH_ID = ?) ;
-        ''', [m.matchId, m.opponentName, m.matchOutcomeForYou, m.matchId])
+        ''', [m.matchId, m.opponentName, m.matchOutcomeForYou, m.matchStart, m.matchEnd, m.matchId])
 
         conn.commit()
     finally:
         conn.close()
+
+
+######################################################################
+## Returns if a file was already processed
+#
+def fileAlreadyProcessed (path):
+    conn = sqlite3.connect(DB_FILE)
+    try:
+        cur  = conn.cursor()
+        cur.execute("SELECT * FROM PROCESSING_HISTORY WHERE FILE_NAME = ? ORDER BY ROWID ASC LIMIT 1", [os.path.basename(path)])
+
+        return len(cur.fetchall()) != 0
+    finally:
+        conn.close()   
+    return False
+
+
+######################################################################
+## Records the file processing in the DB
+#
+def markFileAsProcessed (path):
+    conn = sqlite3.connect(DB_FILE)
+    try:
+        conn.execute('''
+        INSERT INTO PROCESSING_HISTORY (FILE_NAME, PROCESS_DT) 
+        VALUES (?, ?);
+        ''', [os.path.basename(path), datetime.datetime.now()])
+
+        conn.commit()
+    finally:
+        conn.close()    

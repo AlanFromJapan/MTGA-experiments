@@ -9,6 +9,8 @@ CREATE TABLE MATCH (
     MATCH_ID varchar(120) PRIMARY KEY NOT NULL,
     OPPONENT_NAME nvarchar(100),
     OPPONENT_ID varchar(120),
-    RESULT varchar(20)
+    RESULT varchar(20),
+    MATCH_START DATETIME,
+    MATCH_END DATETIME
 );
 
