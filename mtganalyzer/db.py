@@ -43,10 +43,10 @@ def storeMatch(m : MtgaMatch):
     conn = sqlite3.connect(DB_FILE)
     try:
         conn.execute('''
-        INSERT INTO MATCH (MATCH_ID, OPPONENT_NAME, RESULT, MATCH_START, MATCH_END) 
-        SELECT ?, ?, ?, ?, ?
+        INSERT INTO MATCH (MATCH_ID, OPPONENT_NAME, RESULT, MATCH_START, MATCH_END, DECK_ID) 
+        SELECT ?, ?, ?, ?, ?, ?
         WHERE NOT EXISTS (SELECT 1 FROM MATCH M2 WHERE M2.MATCH_ID = ?) ;
-        ''', [m.matchId, m.opponentName, m.matchOutcomeForYou, m.matchStart, m.matchEnd, m.matchId])
+        ''', [m.matchId, m.opponentName, m.matchOutcomeForYou, m.matchStart, m.matchEnd, m.deck.deckId if m.deck != None else None, m.matchId])
 
         conn.commit()
     finally:
@@ -82,3 +82,21 @@ def markFileAsProcessed (path):
         conn.commit()
     finally:
         conn.close()    
+
+
+
+######################################################################
+## Stores a DECK in DB
+#
+def storeDeck(d : MtgaDeck):
+    conn = sqlite3.connect(DB_FILE)
+    try:
+        conn.execute('''
+        INSERT INTO DECK (DECK_ID, DECK_NAME, MANA, TILE_ARENAID) 
+        SELECT ?, ?, ?, ?
+        WHERE NOT EXISTS (SELECT 1 FROM DECK D2 WHERE D2.DECK_ID = ?) ;
+        ''', [d.deckId, d.name, d.mana, d.tileCardArenaID, d.deckId])
+
+        conn.commit()
+    finally:
+        conn.close()

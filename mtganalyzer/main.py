@@ -41,6 +41,10 @@ def scanOneFile (path):
     print ("INFO: Scanning " + path)
     mlist = scanner.scanFile(path)
     for m in mlist:
+        if m.deck != None:
+            db.storeDeck(m.deck)
+        else:
+            print ("WARN: match without deck => " + str(m))
         db.storeMatch(m)
     
     #and remember

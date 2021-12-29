@@ -193,6 +193,7 @@ class MtgaLogScanner:
 
                         #and reset
                         lastMatch = None
+                        lastDeck = None
                         stateMachine = STATE_START
 
                 gng = self.extractGoldAndGems(l)
