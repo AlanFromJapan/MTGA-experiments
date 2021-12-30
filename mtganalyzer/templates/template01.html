@@ -1,0 +1,22 @@
+<html>
+  <head>
+    <title>Mtganalyzer - {{ pagename }}</title>
+    <link rel="stylesheet" href="css/style.css" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+
+  </head>
+<body>
+
+<table class="header">
+  <tr>
+    <td><a href="/">Home</a></td>
+    <td><a href="matchhistory">Match history</a></td>
+    <td><a href="decks">Deck stats</a></td>
+    <td><a href="opponents">Opponents stats</a></td>
+    <td><a href="about">About Mtganalyzer</a></td>
+  </tr>
+</table>
+{% autoescape false %}
+    {{ pagecontent }}
+{% endautoescape %}
+</body>

@@ -25,7 +25,8 @@ ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'ico'])
 
 @app.route('/')
 def homepage():
-    return 'Hello world <img src="%s" />' % (mtgalib.getImageURLFromArenaID(78909, "small"))
+    #return 'Hello world <img src="%s" />' % (mtgalib.getImageURLFromArenaID(78909, "small"))
+    return render_template("template01.html", pagename="test page", pagecontent='Hello world !')
 
 ########################################################################################
 ## Non-web related functions

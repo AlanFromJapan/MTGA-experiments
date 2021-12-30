@@ -1,0 +1,22 @@
+body {
+    background-color: #262626;
+    color: gainsboro;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+table.header{
+    width: 100%;
+    text-align: center;
+    height: 30px;
+    vertical-align: middle;
+}
+
+table.header tr td {
+    width:20%;
+}   
+
+a {color:gainsboro;}
+a:link {text-decoration: none;}
+a:hover {text-decoration: underline; color: gold !important;}
+a:active {font-weight: bold;}
+a:visited {color:gainsboro;}
