@@ -10,11 +10,15 @@ class MtgaMatch:
     matchOutcomeForYou = "?"
     deck = None
 
-    def __init__(self, matchId, matchStart, opponentName, opponentTeamId) -> None:
+    def __init__(self, matchId, matchStart, opponentName, opponentTeamId, matchEnd = datetime.max, outcome="?") -> None:
         self.matchId = matchId
         self.matchStart = matchStart
         self.opponentName = opponentName
         self.opponentTeamId = opponentTeamId
+
+        self.matchEnd = matchEnd
+        self.matchOutcomeForYou = outcome
+        
 
     def setDeck(self, d):
         self.deck = d

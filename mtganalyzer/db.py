@@ -100,3 +100,28 @@ def storeDeck(d : MtgaDeck):
         conn.commit()
     finally:
         conn.close()
+
+
+
+######################################################################
+## Returns last match (match list)
+#
+def getMatchLatest (count: int = 10):
+    conn = sqlite3.connect(DB_FILE)
+    try:
+        cur  = conn.cursor()
+        cur.execute("SELECT * FROM MATCH M JOIN DECK D ON M.deck_Id = D.deck_Id ORDER BY M.MATCH_START DESC LIMIT ?", [count])
+
+        rows = cur.fetchall()
+
+        matches = []
+        for row in rows:
+            m = MtgaMatch(row[0], row[4], row[1], 0, row[5], row[3])
+            d = MtgaDeck(row[8], row[10], row[7], row[9])
+            m.deck = d
+            matches.append(m)
+
+        return matches
+    finally:
+        conn.close()   
+    return False

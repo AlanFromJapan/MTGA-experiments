@@ -15,8 +15,35 @@ table.header tr td {
     width:20%;
 }   
 
+/* Anchors */
 a {color:gainsboro;}
 a:link {text-decoration: none;}
-a:hover {text-decoration: underline; color: gold !important;}
 a:active {font-weight: bold;}
 a:visited {color:gainsboro;}
+a:hover {
+    color:gold;
+    text-decoration: underline;
+}
+
+/* Found the glow effect here https://www.proglobalbusinesssolutions.com/css-hover-effects/ */
+table.header a {
+    color:gainsboro;    
+    transition: .5s; 
+    border-radius: 50%;}
+table.header a:before{  
+    background: gold;
+    transition: .5s;
+    transform: scale(.9);
+    z-index: -1;
+
+  border-radius: 50%;
+}
+table.header a:hover::before {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px gold;
+    }
+table.header a:hover {
+    color: gold;
+    box-shadow: 0 0 5px gold;
+    text-shadow: 0 0 5px gold;
+}

@@ -26,7 +26,27 @@ ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'ico'])
 @app.route('/')
 def homepage():
     #return 'Hello world <img src="%s" />' % (mtgalib.getImageURLFromArenaID(78909, "small"))
-    return render_template("template01.html", pagename="test page", pagecontent='Hello world !')
+    return render_template("template01.html", pagename="MTGAnalyzer - home", pagecontent='Hello world !')
+
+
+
+@app.route('/about')
+def aboutPage():
+    return render_template("template01.html", pagename="MTGAnalyzer - About", pagecontent='''
+About MTGAnalyzer<br/>
+<br/>
+By AlanFromJapan / MIT license / Full source code here <a href="https://github.com/AlanFromJapan/MTGA-experiments">on Github</a>.
+    ''')
+
+
+
+@app.route('/matchhistory')
+def matchHistoryPage():
+    matches = db.getMatchLatest()
+    body = "<br/>".join([str(m) for m in matches])
+
+    return render_template("template01.html", pagename="MTGAnalyzer - match history", pagecontent=body)
+
 
 ########################################################################################
 ## Non-web related functions
