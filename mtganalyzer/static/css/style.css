@@ -4,6 +4,8 @@ body {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
+/*--------------------------------------------------------------------------------------------------------*/
+/* Header */
 table.header{
     width: 100%;
     text-align: center;
@@ -12,11 +14,12 @@ table.header{
 }
 
 table.header tr td {
-    width:20%;
+    width:16%;
 }   
 
+/*--------------------------------------------------------------------------------------------------------*/
 /* Anchors */
-a {color:gainsboro;}
+a {color:gainsboro; border-bottom: 1px dotted gold;}
 a:link {text-decoration: none;}
 a:active {font-weight: bold;}
 a:visited {color:gainsboro;}
@@ -25,18 +28,22 @@ a:hover {
     text-decoration: underline;
 }
 
+/*--------------------------------------------------------------------------------------------------------*/
 /* Found the glow effect here https://www.proglobalbusinesssolutions.com/css-hover-effects/ */
 table.header a {
     color:gainsboro;    
     transition: .5s; 
-    border-radius: 50%;}
+    border-radius: 50%;
+    border-bottom: none;
+    font-weight: bold;
+}
 table.header a:before{  
     background: gold;
     transition: .5s;
     transform: scale(.9);
     z-index: -1;
 
-  border-radius: 50%;
+    border-radius: 50%;
 }
 table.header a:hover::before {
     transform: scale(1.1);
@@ -46,4 +53,41 @@ table.header a:hover {
     color: gold;
     box-shadow: 0 0 5px gold;
     text-shadow: 0 0 5px gold;
+}
+
+/*--------------------------------------------------------------------------------------------------------*/
+/* History match list */
+table.matchhistory {
+    width: 90%;
+    border-width: 0px;
+    background-color: #101010;
+} 
+table.matchhistory td.opponent{
+    font-weight: bold;
+    color:limegreen;
+}
+table.matchhistory td.outcomeVictory{
+    color:limegreen;
+    width:100px;
+}
+table.matchhistory td.outcomeDefeat{
+    color: darkred;
+    width:100px;
+}
+table.matchhistory td.deckmana{
+    width:75px;
+}
+table.matchhistory td.time{
+    color: darkslategrey;
+    text-align: right;
+    font-size: smaller;
+}
+table.matchhistory td.deckname{
+    text-transform: capitalize;
+}
+table.matchhistory td.deckname::before{
+    content:"「";
+}
+table.matchhistory td.deckname::after{
+    content:"」";
 }

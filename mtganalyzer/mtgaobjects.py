@@ -1,5 +1,5 @@
 import os
-from datetime import datetime
+from datetime import date, datetime
 
 class MtgaMatch:
     matchId = ""
@@ -30,6 +30,10 @@ class MtgaMatch:
     def __repr__(self) -> str:
         return "Played %s at %s with deck '%s' (team #%s) with result '%s' for you. [match ID='%s']" %(self.opponentName, self.matchStart, self.deck.name if self.deck != None else "**Unknown deck**" , self.opponentTeamId, self.matchOutcomeForYou, self.matchId)
 
+    def duration(self):
+        s = datetime.strptime(self.matchStart, "%Y-%m-%d %H:%M:%S")
+        e = datetime.strptime(self.matchEnd, "%Y-%m-%d %H:%M:%S")
+        return e - s
 
 class MtgaDeck:
     name = "**unnamed**"

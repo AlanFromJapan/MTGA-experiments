@@ -1,0 +1,61 @@
+<html>
+  <head>
+    <title>Mtganalyzer - {{ pagename }}</title>
+    <link rel="stylesheet" href="css/style.css" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+
+
+
+  </head>
+<body>
+
+<table class="header">
+  <tr>
+    <td><a href="/">Home</a></td>
+    <td><a href="matchhistory">Match history</a></td>
+    <td><a href="decks">Deck stats</a></td>
+    <td><a href="opponents">Opponents stats</a></td>
+    <td><a href="settings">Settings</a></td>
+    <td><a href="about">About Mtganalyzer</a></td>
+  </tr>
+</table>
+<br/>
+<br/>
+{% for m in matches %}
+<table class="matchhistory">
+<tr>
+    <td class="opponent" colspan="3">{{ m.opponentName }}</td>
+    <td class="time">{{ m.matchStart }}</td>
+</tr>
+<tr>
+    {% if m.matchOutcomeForYou == "Victory" %}
+    <td class="outcomeVictory">Victory</td>
+    {% else %}
+    <td class="outcomeDefeat">Defeat</td>
+    {% endif %}
+    <td class="deckmana">{{ m.deck.mana }}</td>
+    <td class="deckname">{{ m.deck.name }}</td>
+    <td class="matchduration">{{ m.duration() }}</td>
+</tr>
+</table>
+<br/>
+{% endfor %}
+
+<script type="text/javascript">
+    //https://stackoverflow.com/questions/4487455/replace-text-with-image-javascript-getelementsbyclass
+    //Replace the mana codes with images
+    var list, index, element, filename;
+    list = document.getElementsByClassName('deckmana');
+    for (index = 0; index < list.length; ++index) {
+        element = list[index];
+
+        //that's ugly but it works because of the case :P
+        element.innerHTML = element.innerHTML.replace("B", "<img src='images/B.png' alt='Black'/>");
+        element.innerHTML = element.innerHTML.replace("R", "<img src='images/R.png' alt='Red'/>");
+        element.innerHTML = element.innerHTML.replace("U", "<img src='images/U.png' alt='Blue'/>");
+        element.innerHTML = element.innerHTML.replace("W", "<img src='images/W.png' alt='White'/>");
+        element.innerHTML = element.innerHTML.replace("G", "<img src='images/R.png' alt='Green'/>");
+    }
+
+</script>
+</body>

@@ -43,9 +43,8 @@ By AlanFromJapan / MIT license / Full source code here <a href="https://github.c
 @app.route('/matchhistory')
 def matchHistoryPage():
     matches = db.getMatchLatest()
-    body = "<br/>".join([str(m) for m in matches])
 
-    return render_template("template01.html", pagename="MTGAnalyzer - match history", pagecontent=body)
+    return render_template("history01.html", pagename="MTGAnalyzer - match history", matches=matches)
 
 
 ########################################################################################
