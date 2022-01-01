@@ -22,20 +22,22 @@
 <br/>
 <br/>
 {% for m in matches %}
+
 <table class="matchhistory">
 <tr>
+    <td rowspan="2" class="tile"><img src="{{ m.deck.tileURL }}" /></td>
     <td class="opponent" colspan="3">{{ m.opponentName }}</td>
-    <td class="time">{{ m.matchStart }}</td>
+    <td class="time">⏲ {{ m.matchStart }}</td>
 </tr>
 <tr>
     {% if m.matchOutcomeForYou == "Victory" %}
-    <td class="outcomeVictory">Victory</td>
+    <td class="outcomeVictory">🌟 Victory</td>
     {% else %}
-    <td class="outcomeDefeat">Defeat</td>
+    <td class="outcomeDefeat">💔 Defeat</td>
     {% endif %}
     <td class="deckmana">{{ m.deck.mana }}</td>
     <td class="deckname">{{ m.deck.name }}</td>
-    <td class="matchduration">{{ m.duration() }}</td>
+    <td class="matchduration">⌛ {{ m.duration() }}</td>
 </tr>
 </table>
 <br/>

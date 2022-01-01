@@ -40,12 +40,14 @@ class MtgaDeck:
     deckId = ""
     tileCardArenaID = -1
     mana = ""
+    tileURL = None
 
-    def __init__(self, name, tileCardId, deckId, mana) -> None:
+    def __init__(self, name, tileCardId, deckId, mana, tileURL=None) -> None:
         self.name = name
         self.tileCardArenaID = tileCardId
         self.mana = mana
         self.deckId = deckId
+        self.tileURL = tileURL
 
     def __repr__(self) -> str:
         return "Deck '%s' (%s) [tile=%s, id=%s)" %(self.name, self.mana, self.tileCardArenaID, self.deckId)

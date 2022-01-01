@@ -81,6 +81,10 @@ table.matchhistory td.time{
     color: darkslategrey;
     text-align: right;
     font-size: smaller;
+    width: 175px;
+}
+table.matchhistory td.matchduration{
+    text-align: right;
 }
 table.matchhistory td.deckname{
     text-transform: capitalize;
@@ -90,4 +94,11 @@ table.matchhistory td.deckname::before{
 }
 table.matchhistory td.deckname::after{
     content:"」";
+}
+table.matchhistory td.tile{
+    width:100px; 
+}
+table.matchhistory td.tile img{
+    /* real width as small image is 146px */
+    width:90px; 
 }

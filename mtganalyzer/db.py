@@ -18,7 +18,7 @@ def initDB():
     conn = sqlite3.connect(DB_FILE)
     try:
         #Create tables
-        fin = open("db_init.sql", "rt")
+        fin = open("sql/db_init.sql", "rt")
         sql = fin.read()
         conn.executescript(sql)
 
@@ -104,6 +104,22 @@ def storeDeck(d : MtgaDeck):
 
 
 ######################################################################
+## Update a DECK tile's URL in DB
+#
+def saveDeckURL(d : MtgaDeck):
+    conn = sqlite3.connect(DB_FILE)
+    try:
+        conn.execute('''
+        UPDATE DECK SET TILE_URL_SMALL = ? WHERE DECK_ID = ? ;
+        ''', [d.tileURL, d.deckId])
+
+        conn.commit()
+    finally:
+        conn.close()
+
+
+
+######################################################################
 ## Returns last match (match list)
 #
 def getMatchLatest (count: int = 10):
@@ -117,7 +133,7 @@ def getMatchLatest (count: int = 10):
         matches = []
         for row in rows:
             m = MtgaMatch(row[0], row[4], row[1], 0, row[5], row[3])
-            d = MtgaDeck(row[8], row[10], row[7], row[9])
+            d = MtgaDeck(row[8], row[10], row[7], row[9], row[11])
             m.deck = d
             matches.append(m)
 

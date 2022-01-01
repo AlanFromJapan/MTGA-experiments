@@ -63,6 +63,9 @@ def scanOneFile (path):
     for m in mlist:
         if m.deck != None:
             db.storeDeck(m.deck)
+            #get the tile URL
+            m.deck.tileURL = mtgalib.getImageURLFromDeck(m.deck, "small")
+            db.saveDeckURL(m.deck)
         else:
             print ("WARN: match without deck => " + str(m))
         db.storeMatch(m)
