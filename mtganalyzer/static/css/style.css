@@ -1,5 +1,5 @@
 body {
-    background-color: #262626;
+    background-color: black;
     color: gainsboro;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
@@ -60,30 +60,35 @@ table.header a:hover {
 table.matchhistory {
     width: 90%;
     border-width: 0px;
-    background-color: #101010;
+    background-color: #262626;
 } 
 table.matchhistory td.opponent{
     font-weight: bold;
-    color:limegreen;
+    color:goldenrod;
+    font-size:larger;
 }
 table.matchhistory td.outcomeVictory{
     color:limegreen;
     width:100px;
+    font-weight: bold;
 }
 table.matchhistory td.outcomeDefeat{
-    color: darkred;
+    color: crimson;
     width:100px;
+    font-weight: bold;
 }
 table.matchhistory td.deckmana{
     width:75px;
+    text-align: center;
 }
 table.matchhistory td.time{
-    color: darkslategrey;
+    color: dimgray;
     text-align: right;
     font-size: smaller;
     width: 175px;
 }
 table.matchhistory td.matchduration{
+    color: dimgray;
     text-align: right;
 }
 table.matchhistory td.deckname{

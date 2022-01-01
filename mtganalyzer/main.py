@@ -42,7 +42,7 @@ By AlanFromJapan / MIT license / Full source code here <a href="https://github.c
 
 @app.route('/matchhistory')
 def matchHistoryPage():
-    matches = db.getMatchLatest()
+    matches = db.getMatchLatest(100)
 
     return render_template("history01.html", pagename="MTGAnalyzer - match history", matches=matches)
 

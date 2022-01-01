@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="css/style.css" type="text/css" />
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 
-
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 
   </head>
 <body>
@@ -46,7 +46,7 @@
 <script type="text/javascript">
     //https://stackoverflow.com/questions/4487455/replace-text-with-image-javascript-getelementsbyclass
     //Replace the mana codes with images
-    var list, index, element, filename;
+    var list, index, element;
     list = document.getElementsByClassName('deckmana');
     for (index = 0; index < list.length; ++index) {
         element = list[index];
@@ -57,6 +57,17 @@
         element.innerHTML = element.innerHTML.replace("U", "<img src='images/U.png' alt='Blue'/>");
         element.innerHTML = element.innerHTML.replace("W", "<img src='images/W.png' alt='White'/>");
         element.innerHTML = element.innerHTML.replace("G", "<img src='images/R.png' alt='Green'/>");
+    }
+
+    //dim the color of the opponent UID
+    list = document.getElementsByClassName('opponent');
+    for (index = 0; index < list.length; ++index) {
+        element = list[index];
+
+        nam = element.innerHTML.slice(0, element.innerHTML.lastIndexOf('#'));
+        id =  element.innerHTML.slice(element.innerHTML.lastIndexOf('#')+1);
+
+        element.innerHTML = nam + "<span style='font-size:x-small;color:dimgrey;vertical-align:super;'>&nbsp;#" + id +"</span>"
     }
 
 </script>
