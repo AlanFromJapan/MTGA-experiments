@@ -1,0 +1,45 @@
+<html>
+  <head>
+    <title>Mtganalyzer - {{ pagename }}</title>
+    <link rel="stylesheet" href="css/style.css" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+  </head>
+<body>
+
+<table class="header">
+  <tr>
+    <td><a href="/">Home</a></td>
+    <td><a href="matchhistory">Match history</a></td>
+    <td><a href="decks">Deck stats</a></td>
+    <td><a href="opponents">Opponents stats</a></td>
+    <td><a href="settings">Settings</a></td>
+    <td><a href="about">About Mtganalyzer</a></td>
+  </tr>
+</table>
+<br/>
+<br/>
+
+<table class="decksstats">
+{% for s in stats %}
+<tr>
+  <td rowspan="4"><img src="{{ s['TILE_URL_SMALL'] }}" /></td>
+  <td><span class="deckname">{{ s['DECK_NAME'] }}</span><br/><span class="id">{{ s['DECK_ID'] }}</span></td>
+  <td>{{ s['MANA'] }}</td>
+</tr>
+<tr>
+  <td>Total matches: {{ s['TotalMatch'] }}</td>
+  <td>Average match duraction (sec): {{ s['AvgMatchLengthInSec'] }}</td>
+</tr>
+<tr>
+  <td colspan="2">Total win: {{ s['TotalWin'] }} (ratio: {{ 100 * s['TotalWin'] / s['TotalMatch'] }}%)</td>
+</tr>
+<tr>
+  <td colspan="2">Total loss: {{ s['TotalLoss'] }}</td>
+</tr>
+{% endfor %}
+</table>
+
+</body>

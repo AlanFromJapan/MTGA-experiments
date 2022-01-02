@@ -47,6 +47,13 @@ def matchHistoryPage():
     return render_template("history01.html", pagename="MTGAnalyzer - match history", matches=matches)
 
 
+@app.route('/decks')
+def decksPage():
+    decksstats = db.getDeckStats()
+
+    return render_template("decksstats01.html", pagename="MTGAnalyzer - decks statistics", stats=decksstats)
+
+
 ########################################################################################
 ## Non-web related functions
 #
