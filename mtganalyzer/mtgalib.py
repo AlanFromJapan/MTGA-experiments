@@ -18,12 +18,12 @@ def getImageURLFromArenaID (arenaId, size):
 
     #check the cache first
     if arenaId in cache_ArenaID2ImageURL:
-        print ("DBG: URL found tile in cache %s -> %s" % (arenaId, cache_ArenaID2ImageURL[arenaId]))
+        #print ("DBG: URL found tile in cache %s -> %s" % (arenaId, cache_ArenaID2ImageURL[arenaId]))
         return cache_ArenaID2ImageURL[arenaId]
 
     #not in cache
     try:
-        print ("DBG: URL NOT found tile in cache %s" % (arenaId))
+        #print ("DBG: URL NOT found tile in cache %s" % (arenaId))
         resp = requests.get("https://api.scryfall.com/cards/arena/%s" % (arenaId))
         #Scryfall asked to not flood their service
         time.sleep(0.1)
