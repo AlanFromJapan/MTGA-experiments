@@ -107,3 +107,34 @@ table.matchhistory td.tile img{
     /* real width as small image is 146px */
     width:90px; 
 }
+
+/*--------------------------------------------------------------------------------------------------------*/
+/* Decks stats */
+table.decksstats  {
+    /* border: solid 1px white; */
+
+    width:90%;
+    background-color: #262626;
+}
+table.decksstats td {
+    /* border: solid 1px red; */
+}
+table.decksstats .decktile {
+    width:100px;
+}
+table.decksstats .decktile img {
+    /* real width as small image is 146px */
+    width:90px;
+}
+table.decksstats td.deckname{
+    width:300px;
+}
+table.decksstats td.deckname .name{
+    font-weight: bold;
+    color:goldenrod;
+    font-size:larger;
+}
+table.decksstats td.deckname .id{
+    color: dimgray;
+    font-size: x-small;
+}

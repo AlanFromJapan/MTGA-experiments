@@ -22,11 +22,11 @@
 <br/>
 <br/>
 
-<table class="decksstats">
 {% for s in stats %}
+<table class="decksstats">
 <tr>
-  <td rowspan="4"><img src="{{ s['TILE_URL_SMALL'] }}" /></td>
-  <td><span class="deckname">{{ s['DECK_NAME'] }}</span><br/><span class="id">{{ s['DECK_ID'] }}</span></td>
+  <td rowspan="4" class="decktile"><img src="{{ s['TILE_URL_SMALL'] }}" /></td>
+  <td class="deckname"><span class="name">{{ s['DECK_NAME'] }}</span><br/><span class="id">{{ s['DECK_ID'] }}</span></td>
   <td>{{ s['MANA'] }}</td>
 </tr>
 <tr>
@@ -39,7 +39,8 @@
 <tr>
   <td colspan="2">Total loss: {{ s['TotalLoss'] }}</td>
 </tr>
-{% endfor %}
 </table>
+<br/>
+{% endfor %}
 
 </body>
