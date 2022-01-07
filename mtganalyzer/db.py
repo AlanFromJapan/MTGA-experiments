@@ -188,6 +188,14 @@ def dict_from_row(row):
 ## Returns general stats 
 #
 def getGeneralStats ():
+    return __executeScriptAndReturn("getStats.sql", "SELECT * FROM tmpStats;")
+
+
+
+######################################################################
+## Executes a script and then a one liner (typically long script + read result)
+#
+def __executeScriptAndReturn (scriptFileName: str, returnSql : str = None):
     conn = sqlite3.connect(DB_FILE)
     try:
         #get the results with column names and not only index https://docs.python.org/3/library/sqlite3.html#sqlite3.Connection.row_factory
@@ -195,7 +203,7 @@ def getGeneralStats ():
         #in that order
         cur  = conn.cursor()
         
-        scriptFile = os.path.join(".", os.path.join("sql",  "getStats.sql"))
+        scriptFile = os.path.join(".", os.path.join("sql",  scriptFileName))
         #print ("DBG: execute script " + scriptFile)
 
         content = open(scriptFile, "rt").read()
@@ -203,17 +211,24 @@ def getGeneralStats ():
 
         #executes the script but does not return content of the final "SELECT", have to do it after with an regular execute
         cur.executescript(content)
+        conn.commit()
+        
         #read the result
-        cur.execute("SELECT * FROM tmpStats;")
-        
-        #make an array of dict of the output
-        res = []
-        for row in cur.fetchall():
-            #print("DBG row=" + str(row))
-            res.append(dict_from_row(row))
-        
-        return res
+        if not returnSql is None:
+            cur.execute(returnSql)
+            
+            #make an array of dict of the output
+            res = []
+            for row in cur.fetchall():
+                #print("DBG row=" + str(row))
+                res.append(dict_from_row(row))
+            
+            return res
+        else:
+            return None
     except Exception as ex:
-        print ("ERROR in getGeneralStats() : " + str(ex))
+        print ("ERROR in __executeScriptAndReturn() : " + str(ex))
+        conn.rollback()
+        return None
     finally:
         conn.close()  
