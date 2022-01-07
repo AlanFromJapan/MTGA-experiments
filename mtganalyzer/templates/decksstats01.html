@@ -27,14 +27,14 @@
 <tr>
   <td rowspan="4" class="decktile"><img src="{{ s['TILE_URL_SMALL'] }}" /></td>
   <td class="deckname"><span class="name">{{ s['DECK_NAME'] }}</span><br/><span class="id">{{ s['DECK_ID'] }}</span></td>
-  <td>{{ s['MANA'] }}</td>
+  <td class="deckmana">{{ s['MANA'] }}</td>
 </tr>
 <tr>
   <td>Total matches: {{ s['TotalMatch'] }}</td>
   <td>Average match duraction (sec): {{ s['AvgMatchLengthInSec'] }}</td>
 </tr>
 <tr>
-  <td colspan="2">Total win: {{ s['TotalWin'] }} (ratio: {{ 100 * s['TotalWin'] / s['TotalMatch'] }}%)</td>
+  <td colspan="2">Total win: {{ s['TotalWin'] }} (ratio: {{ s['WinRatioPercent'] }}%)</td>
 </tr>
 <tr>
   <td colspan="2">Total loss: {{ s['TotalLoss'] }}</td>
@@ -43,4 +43,23 @@
 <br/>
 {% endfor %}
 
+
+<script type="text/javascript">
+  //https://stackoverflow.com/questions/4487455/replace-text-with-image-javascript-getelementsbyclass
+  //Replace the mana codes with images
+  var list, index, element;
+  list = document.getElementsByClassName('deckmana');
+  for (index = 0; index < list.length; ++index) {
+      element = list[index];
+
+      //that's ugly but it works because of the case :P
+      element.innerHTML = element.innerHTML.replace("B", "<img src='images/B.png' alt='Black'/>");
+      element.innerHTML = element.innerHTML.replace("R", "<img src='images/R.png' alt='Red'/>");
+      element.innerHTML = element.innerHTML.replace("U", "<img src='images/U.png' alt='Blue'/>");
+      element.innerHTML = element.innerHTML.replace("W", "<img src='images/W.png' alt='White'/>");
+      element.innerHTML = element.innerHTML.replace("G", "<img src='images/R.png' alt='Green'/>");
+  }
+
+
+</script>
 </body>

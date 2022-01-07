@@ -162,7 +162,8 @@ select d.*,
 (SELECT COUNT(1) FROM MATCH m WHERE m.deck_id = d.deck_id) as TotalMatch,
 (SELECT COUNT(1) FROM MATCH m WHERE m.deck_id = d.deck_id AND m.RESULT = "Victory") as TotalWin,
 (SELECT COUNT(1) FROM MATCH m WHERE m.deck_id = d.deck_id AND m.RESULT = "Defeat") as TotalLoss,
-(SELECT AVG(strftime('%s', m.MATCH_END) - strftime('%s', m.MATCH_START)) FROM MATCH m WHERE m.deck_id = d.deck_id) as AvgMatchLengthInSec
+(SELECT AVG(strftime('%s', m.MATCH_END) - strftime('%s', m.MATCH_START)) FROM MATCH m WHERE m.deck_id = d.deck_id) as AvgMatchLengthInSec,
+CAST(100.00 * (1.00 * (SELECT COUNT(1) FROM MATCH m WHERE m.deck_id = d.deck_id AND m.RESULT = "Victory")) / (1.00 * (SELECT COUNT(1) FROM MATCH m WHERE m.deck_id = d.deck_id)) as int) as WinRatioPercent
 
 from DECK d
 WHERE :id IS NULL OR (:id IS NOT NULL AND d.deck_id = :id)   
@@ -180,3 +181,39 @@ ORDER BY DECK_NAME ASC ;
 
 def dict_from_row(row):
     return dict(zip(row.keys(), row))       
+
+
+
+######################################################################
+## Returns general stats 
+#
+def getGeneralStats ():
+    conn = sqlite3.connect(DB_FILE)
+    try:
+        #get the results with column names and not only index https://docs.python.org/3/library/sqlite3.html#sqlite3.Connection.row_factory
+        conn.row_factory = sqlite3.Row
+        #in that order
+        cur  = conn.cursor()
+        
+        scriptFile = os.path.join(".", os.path.join("sql",  "getStats.sql"))
+        #print ("DBG: execute script " + scriptFile)
+
+        content = open(scriptFile, "rt").read()
+        #print("DBG content: " + content)
+
+        #executes the script but does not return content of the final "SELECT", have to do it after with an regular execute
+        cur.executescript(content)
+        #read the result
+        cur.execute("SELECT * FROM tmpStats;")
+        
+        #make an array of dict of the output
+        res = []
+        for row in cur.fetchall():
+            #print("DBG row=" + str(row))
+            res.append(dict_from_row(row))
+        
+        return res
+    except Exception as ex:
+        print ("ERROR in getGeneralStats() : " + str(ex))
+    finally:
+        conn.close()  

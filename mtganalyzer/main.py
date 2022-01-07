@@ -25,8 +25,9 @@ ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'ico'])
 
 @app.route('/')
 def homepage():
-    #return 'Hello world <img src="%s" />' % (mtgalib.getImageURLFromArenaID(78909, "small"))
-    return render_template("template01.html", pagename="MTGAnalyzer - home", pagecontent='Hello world !')
+    stats = db.getGeneralStats()
+
+    return render_template("template01.html", pagename="MTGAnalyzer - home", pagecontent=stats)
 
 
 
@@ -43,8 +44,17 @@ By AlanFromJapan / MIT license / Full source code here <a href="https://github.c
 @app.route('/matchhistory')
 def matchHistoryPage():
     matches = db.getMatchLatest(100)
+    stats = dict()
+    stats["total"] = 0
+    stats["win"] = 0
 
-    return render_template("history01.html", pagename="MTGAnalyzer - match history", matches=matches)
+    for m in matches:
+        stats["total"] = stats["total"] +1
+        stats["win"] = stats["win"] + (1 if m.matchOutcomeForYou == "Victory" else 0)
+
+    stats["winratio"] = "{0:.0f}".format( (100.0 * stats["win"] / stats["total"]) if not stats["total"] == 0 else 0 )
+
+    return render_template("history01.html", pagename="MTGAnalyzer - match history", matches=matches, stats=stats)
 
 
 @app.route('/decks')

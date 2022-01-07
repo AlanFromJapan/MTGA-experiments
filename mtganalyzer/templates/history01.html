@@ -21,6 +21,15 @@
 </table>
 <br/>
 <br/>
+
+<table>
+  <tr>
+    <td>
+    Total match scanned: {{ stats["total"] }} ❖ Win/Loss: {{ stats["win"] }}/{{ stats["total"] - stats["win"] }} ( {{stats["winratio"]}} %)
+    </td>
+  </tr>
+</table>
+
 {% for m in matches %}
 
 <table class="matchhistory">
