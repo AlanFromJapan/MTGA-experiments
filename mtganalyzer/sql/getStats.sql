@@ -18,7 +18,7 @@ from MATCH m join DECK d on m.DECK_ID = d.DECK_ID GROUP by m.deck_id order by co
 ;
 INSERT INTO tmpStats
 SELECT 
-    "" as OneLiner, 
+    "Your most winning deck is '" || DECK_NAME || "' which was victorious " || count(m.DECK_ID) || " time(s)." as OneLiner, 
     "MostWinningDeck" as Item, 
     DECK_NAME as Val, 
     count(m.DECK_ID) as cnt 
@@ -26,7 +26,7 @@ from MATCH m join DECK d on m.DECK_ID = d.DECK_ID where m.RESULT = "Victory" GRO
 ;
 INSERT INTO tmpStats
 SELECT 
-    "" as OneLiner, 
+    "Your average match length is " || printf("%d", avg(strftime('%s', m.MATCH_END) - strftime('%s', m.MATCH_START))) || " seconds." as OneLiner, 
     "AvgMatchLenSec" as Item, 
     CAST(avg(strftime('%s', m.MATCH_END) - strftime('%s', m.MATCH_START))  as varchar(10)), 
     0 as cnt 

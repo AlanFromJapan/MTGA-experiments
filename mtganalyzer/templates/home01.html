@@ -1,0 +1,35 @@
+<html>
+  <head>
+    <title>Mtganalyzer - {{ pagename }}</title>
+    <link rel="stylesheet" href="css/style.css" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  </head>
+<body>
+
+<table class="header">
+  <tr>
+    <td><a href="/">Home</a></td>
+    <td><a href="matchhistory">Match history</a></td>
+    <td><a href="decks">Deck stats</a></td>
+    <td><a href="opponents">Opponents stats</a></td>
+    <td><a href="settings">Settings</a></td>
+    <td><a href="about">About Mtganalyzer</a></td>
+  </tr>
+</table>
+<br/>
+<br/>
+<span class="homewelcome">Welcome to MTGAnalyzer</span><br/>
+By AlanFromJapan / MIT license / Full source code here <a href="https://github.com/AlanFromJapan/MTGA-experiments">on Github</a>.<br/>
+<br/>
+<br/>
+<div class="generalstatsBG">
+  <br/>
+{% for s in stats %}
+<span class="generalstats">{{ s["OneLiner" ]}}</span><br/>
+{% endfor %}
+  <br/>
+</div>
+
+{{ dbg }}
+</body>

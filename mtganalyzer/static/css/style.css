@@ -138,3 +138,20 @@ table.decksstats td.deckname .id{
     color: dimgray;
     font-size: x-small;
 }
+
+/*--------------------------------------------------------------------------------------------------------*/
+/* Home page */
+
+.homewelcome {
+    color: goldenrod;
+    font-weight:bolder;
+    font-size:x-large;
+}
+.generalstats {
+    font-style: italic;    
+    color: gainsboro;
+}
+.generalstatsBG {
+    background-color: #262626;
+
+}

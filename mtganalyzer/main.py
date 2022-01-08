@@ -27,7 +27,7 @@ ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'ico'])
 def homepage():
     stats = db.getGeneralStats()
 
-    return render_template("template01.html", pagename="MTGAnalyzer - home", pagecontent=stats)
+    return render_template("home01.html", pagename="MTGAnalyzer - home", stats=stats) # dbg=stats)
 
 
 
