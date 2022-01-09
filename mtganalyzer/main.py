@@ -60,8 +60,9 @@ def matchHistoryPage():
 @app.route('/decks')
 def decksPage():
     decksstats = db.getDeckStats()
+    deckscolors = db.getDecksColorsStats()
 
-    return render_template("decksstats01.html", pagename="MTGAnalyzer - decks statistics", stats=decksstats)
+    return render_template("decksstats01.html", pagename="MTGAnalyzer - decks statistics", stats=decksstats, colors=deckscolors[0])
 
 
 ########################################################################################

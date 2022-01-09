@@ -191,6 +191,12 @@ def getGeneralStats ():
     return __executeScriptAndReturn("getStats.sql", "SELECT * FROM tmpStats;")
 
 
+######################################################################
+## Returns decks colors stats 
+#
+def getDecksColorsStats ():
+    return __executeScriptAndReturn("getDecksColorsStats.sql", "SELECT * FROM tmpStats;")
+
 
 ######################################################################
 ## Executes a script and then a one liner (typically long script + read result)

@@ -32,6 +32,29 @@ SELECT
     0 as cnt 
 from MATCH m 
 ;
+INSERT INTO tmpStats
+SELECT 
+    "Your recent win ratio is " || printf("%d", CAST(100.0 * SUM(case when X.RESULT = "Victory" THEN 1 ELSE 0 end) as float) / CAST(count(1) as float)) || "% over the last " || cast(count(1) as varchar(10)) || " matches." as OneLiner,
+    "RecentWinRatio" as Item,
+    SUM(case when X.RESULT = "Victory" THEN 1 ELSE 0 end) as Val,
+    0 as cnt
+FROM 
+(SELECT *
+from MATCH m 
+WHERE DECK_ID IS NOT NULL
+order by m. MATCH_START desc LIMIT 10) as X
+;
+INSERT INTO tmpStats
+SELECT 
+    "Your recently favorite deck is '" || d.DECK_NAME || "' with " || cast(count(1) as varchar(10)) || " recent victorie(s)." as OneLiner,
+    "RecentFavoriteDeck" as Item,
+    0 as Val,
+    0 as cnt
+FROM 
+	(SELECT * FROM MATCH WHERE DECK_ID IS NOT NULL ORDER BY MATCH_START DESC LIMIT 10) as m
+	join DECK d on m.DECK_ID = d.DECK_ID GROUP by m.deck_id order by count(m.deck_id) desc LIMIT 1
+;
+-- Final SELECT to return the results
 SELECT * FROM tmpStats;
 
 

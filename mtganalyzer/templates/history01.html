@@ -22,13 +22,20 @@
 <br/>
 <br/>
 
-<table>
-  <tr>
-    <td>
-    Total match scanned: {{ stats["total"] }} ❖ Win/Loss: {{ stats["win"] }}/{{ stats["total"] - stats["win"] }} ( {{stats["winratio"]}} %)
-    </td>
-  </tr>
-</table>
+<div class="matchhistoryheaderdiv">
+  <table class="matchhistoryheader">
+    <tr><td>&nbsp;</td></tr>
+    <tr>
+      <td>
+      Total match scanned: {{ stats["total"] }} ❖ Win/Loss: {{ stats["win"] }}/{{ stats["total"] - stats["win"] }} ( {{stats["winratio"]}} %)
+      </td>
+    </tr>
+    <tr><td>&nbsp;</td></tr>
+  </table>
+</div>
+
+<br/>
+<br/>
 
 {% for m in matches %}
 
