@@ -51,7 +51,13 @@
   <td>Average match duraction (sec): {{ s['AvgMatchLengthInSec'] }}</td>
 </tr>
 <tr>
-  <td colspan="2">Total win: {{ s['TotalWin'] }} (ratio: {{ s['WinRatioPercent'] }}%)</td>
+  <td colspan="2">Total win: {{ s['TotalWin'] }} (ratio: 
+    {% if s['WinRatioPercent'] > 50 %}
+    <span class="winnerdeck">{{ s['WinRatioPercent'] }}</span>
+    {% else %}
+    {{ s['WinRatioPercent'] }}
+    {% endif %}
+    %)</td>
 </tr>
 <tr>
   <td colspan="2">Total loss: {{ s['TotalLoss'] }}</td>

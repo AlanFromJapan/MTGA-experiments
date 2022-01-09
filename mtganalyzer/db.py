@@ -162,7 +162,7 @@ select d.*,
 (SELECT COUNT(1) FROM MATCH m WHERE m.deck_id = d.deck_id) as TotalMatch,
 (SELECT COUNT(1) FROM MATCH m WHERE m.deck_id = d.deck_id AND m.RESULT = "Victory") as TotalWin,
 (SELECT COUNT(1) FROM MATCH m WHERE m.deck_id = d.deck_id AND m.RESULT = "Defeat") as TotalLoss,
-(SELECT AVG(strftime('%s', m.MATCH_END) - strftime('%s', m.MATCH_START)) FROM MATCH m WHERE m.deck_id = d.deck_id) as AvgMatchLengthInSec,
+printf("%d", (SELECT AVG(strftime('%s', m.MATCH_END) - strftime('%s', m.MATCH_START)) FROM MATCH m WHERE m.deck_id = d.deck_id)) as AvgMatchLengthInSec,
 CAST(100.00 * (1.00 * (SELECT COUNT(1) FROM MATCH m WHERE m.deck_id = d.deck_id AND m.RESULT = "Victory")) / (1.00 * (SELECT COUNT(1) FROM MATCH m WHERE m.deck_id = d.deck_id)) as int) as WinRatioPercent
 
 from DECK d

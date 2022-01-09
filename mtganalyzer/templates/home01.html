@@ -21,15 +21,22 @@
 <br/>
 <span class="homewelcome">Welcome to MTGAnalyzer</span><br/>
 By AlanFromJapan / MIT license / Full source code here <a href="https://github.com/AlanFromJapan/MTGA-experiments">on Github</a>.<br/>
+This application is not approved nor affiliated with WotC or Hasbro or anyone.<br/>
+Don't sue me, go play MtGA instead.
 <br/>
+<div class="logobig"><img src="images/Mtg-logo.png" alt="Magic The Gathering (C) WOTC Hasbro"/><br/>
+Wizard of the Coast / Hasbro (c)</div>
 <br/>
 <div class="generalstatsBG">
   <br/>
 <span class="generalstatsheader">Some misc stats about your games</span><br/>
 <br/>
+
+{% autoescape false %}
 {% for s in stats %}
 <span class="generalstats">{{ s["OneLiner" ]}}</span><br/>
 {% endfor %}
+{% endautoescape %}
   <br/>
 </div>
 

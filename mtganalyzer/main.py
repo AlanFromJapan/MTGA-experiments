@@ -36,7 +36,9 @@ def aboutPage():
     return render_template("template01.html", pagename="MTGAnalyzer - About", pagecontent='''
 About MTGAnalyzer<br/>
 <br/>
-By AlanFromJapan / MIT license / Full source code here <a href="https://github.com/AlanFromJapan/MTGA-experiments">on Github</a>.
+By AlanFromJapan / MIT license / Full source code here <a href="https://github.com/AlanFromJapan/MTGA-experiments">on Github</a>.<br/>
+This application is not approved nor affiliated with WotC or Hasbro or anyone.<br/>
+Don't sue me, go play MtGA instead.
     ''')
 
 
@@ -64,6 +66,16 @@ def decksPage():
 
     return render_template("decksstats01.html", pagename="MTGAnalyzer - decks statistics", stats=decksstats, colors=deckscolors[0])
 
+
+
+@app.route('/opponents')
+def opponentsPage():
+    return render_template("template01.html", pagename="MTGAnalyzer - About", pagecontent='''TODO''')
+
+
+@app.route('/settings')
+def settingsPage():
+    return render_template("template01.html", pagename="MTGAnalyzer - About", pagecontent='''TODO''')
 
 ########################################################################################
 ## Non-web related functions

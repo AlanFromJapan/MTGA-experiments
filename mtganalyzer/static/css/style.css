@@ -153,6 +153,9 @@ table.decksstats td.deckname .id{
     color: dimgray;
     font-size: x-small;
 }
+table.decksstats .winnerdeck{    
+    color:limegreen;
+}
 
 div.deckstatsmanadiv{
     text-align: center;
@@ -199,4 +202,12 @@ table.deckstatsmana{
     font-weight:bolder;
     font-size: large;
     margin-left: 15px;
+}
+span.generalstatsHighlight{
+    color: darkgoldenrod;
+    font-weight:bold;
+}
+div.logobig {
+    text-align:center;
+    font-size: xx-small;
 }
