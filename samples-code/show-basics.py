@@ -14,11 +14,13 @@ REGEX_Playername='"playerName": "(?P<name>[^"]+)"'
 REGEX_Gold='"Gold\\\\\D+(?P<gold>\d+)'
 REGEX_Gems='"Gems\\\\\D+(?P<gems>\d+)'
 REGEX_Deckname='"Name\\\\\W+\"(?P<name>[^\\\\]+)'
+REGEX_PlayedCard='"grpId": (?P<cardId>\d+), "type": "GameObjectType_Card", "zoneId": \d+, "visibility": "[^"]+", "ownerSeatId": (?P<seat>\d+), "controllerSeatId": \d+, "cardTypes": \[ "(?P<type>[^"]+)" \]'
 
 rePlayername = re.compile(REGEX_Playername)
 reGold = re.compile(REGEX_Gold)
 reGems = re.compile(REGEX_Gems)
 reDeckname = re.compile(REGEX_Deckname)
+rePlayedCard = re.compile(REGEX_PlayedCard)
 
 #------------------------------------------------------------------------------------------------------
 # Returns the match START details: opponent, start-time, matchID, opponent team ID
@@ -113,6 +115,31 @@ def extractUsedDeck(l):
         
     return None
 
+
+#------------------------------------------------------------------------------------------------------
+# Returns played card
+#
+def extractPlayedCard(l, i, myTeam):
+    '''
+    m = rePlayedCard.search(l)
+    if m != None:
+        #print("DBG: found deck named " + m.group("name"))
+        if "CardType_Land" != m.group("type"):
+            print ("DBG found card " + m.group("cardId") + " - " + m.group("type"))
+    '''
+    '''
+    m = rePlayedCard.findall(l)
+    if m != None and len(m) > 0:
+        #print ("Line " + str(i) + ": " + str(m))
+        for n in m:
+            if int(n[1]) == myTeam:
+                print ("Line " + str(i) + ": card " + str(n))
+    '''
+    if "GameObjectType_Card" in l:
+        j = json.loads(l)
+        print ("Line " + str(i) + ": cards")
+
+
 #######################################################################################################
 ##                                                                                                   ##
 ##                                     M A I N                                                       ##
@@ -138,11 +165,14 @@ try:
     lastOpponentTeam = 0
     lastGoldAndGem = None
     lastDeck = None
+    lastTeam = 0
 
     while True:
         l = fin.readline()
         if not l:
             break
+
+        extractPlayedCard(l, i, lastTeam)
 
         if stateMachine == STATE_START:
             de = extractUsedDeck(l)
@@ -151,9 +181,10 @@ try:
 
             match = extractMatchStart(l)
             if match != None:            
-                print("line %d: Played %s at %s with deck '%s' (team #%s)" %(i,match[0], match[1], lastDeck, match[3] ))
+                print("line %d: Played %s at %s with deck '%s' (team #%s)" %(i,match[0], match[1], lastDeck, match[3] ))                
                 lastMatch = match[2]
                 lastOpponentTeam = match[3]
+                lastTeam = 2 if int(match[3]) == 1 else 1
                 stateMachine = STATE_END
         elif stateMachine == STATE_END:
             match = extractMatchEnd(l, lastMatch, lastOpponentTeam)
