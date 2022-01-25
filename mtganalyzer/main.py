@@ -17,12 +17,48 @@ import mtgalogs
 import db
 
 
-
+########################################################################################
+## Flask vars
+#
 app = Flask(__name__, static_url_path='')
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'ico'])
 
+########################################################################################
+## Flask init
+#
+@app.before_first_request
+def init():
+    global myPlayerId
 
+    #Init
+    myPlayerId = config.myconfig["my_userId"]
+    print ("My user id " + myPlayerId)
+
+    #DB setup
+    #db.deleteDB()
+    db.initDB()
+
+    #scanner init
+    scanner = mtgalogs.MtgaLogScanner(myPlayerId)
+
+    #scan 
+    paramPath = str(sys.argv[1])
+    if ".log" == paramPath[-4:].lower():
+        #scan 1 file
+        scanOneFile(paramPath)
+    else:
+        #assume it's a folder
+        for f in os.listdir(paramPath):
+            path2file = os.path.join(paramPath, f)
+            if os.path.isfile(path2file) and ".log" == path2file[-4:].lower():
+                scanOneFile(path2file)
+
+
+
+########################################################################################
+## Web related functions
+#
 @app.route('/')
 def homepage():
     stats = db.getGeneralStats()
@@ -112,28 +148,7 @@ if __name__ == '__main__':
         exit()
 
 
-    #Init
-    myPlayerId = config.myconfig["my_userId"]
-    print ("My user id " + myPlayerId)
-
     try:
-        #DB setup
-        #db.deleteDB()
-        db.initDB()
- 
-        #scanner init
-        scanner = mtgalogs.MtgaLogScanner(myPlayerId)
-
-        #scan 
-        paramPath = str(sys.argv[1])
-        if ".log" == paramPath[-4:].lower():
-            #scan 1 file
-            scanOneFile(paramPath)
-        else:
-            #assume it's a folder
-            for f in os.listdir(paramPath):
-                scanOneFile(os.path.join(paramPath, f))
-
         #start web interface
         app.debug = True
         app.run(host='0.0.0.0', port=45678, threaded=True)
