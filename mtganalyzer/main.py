@@ -29,8 +29,6 @@ ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'ico'])
 #
 @app.before_first_request
 def init():
-    global myPlayerId
-
     #Init
     myPlayerId = config.myconfig["my_userId"]
     print ("My user id " + myPlayerId)
@@ -46,13 +44,13 @@ def init():
     paramPath = str(sys.argv[1])
     if ".log" == paramPath[-4:].lower():
         #scan 1 file
-        scanOneFile(paramPath)
+        scanOneFile(scanner, paramPath)
     else:
         #assume it's a folder
         for f in os.listdir(paramPath):
             path2file = os.path.join(paramPath, f)
             if os.path.isfile(path2file) and ".log" == path2file[-4:].lower():
-                scanOneFile(path2file)
+                scanOneFile(scanner, path2file)
 
 
 
@@ -119,7 +117,7 @@ def settingsPage():
 
 #---------------------------------------------------------------------------------------
 # Processes 1 file (path to the file)
-def scanOneFile (path):
+def scanOneFile (scanner, path):
     if db.fileAlreadyProcessed(path):
         print("INFO: Skipping already processed '%s'." % (os.path.basename(path)))
         return
