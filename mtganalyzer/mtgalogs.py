@@ -134,7 +134,7 @@ class MtgaLogScanner:
     # Returns Last deck set (normally the one used) 
     #
     def extractUsedDeck(self, l):
-        if "Event_SetDeck" in l and ":602" in l:
+        if "Deck_UpsertDeck" in l and ":402" in l:
             m = self.reDeckname.search(l)
             m2 = self.reDecktile.search(l)
             m3 = self.reDeckId.search(l)

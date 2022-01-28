@@ -1,0 +1,6 @@
+
+DELETE
+FROM MATCH WHERE strftime('%Y-%m-%d', MATCH_START) = DATE();
+
+DELETE
+FROM PROCESSING_HISTORY as P WHERE strftime('%Y-%m-%d', P.PROCESS_DT) = DATE();
