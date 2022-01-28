@@ -1,0 +1,58 @@
+<html>
+  <head>
+    <title>Mtganalyzer - {{ pagename }}</title>
+    <link rel="stylesheet" href="css/style.css" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  </head>
+<body>
+
+<table class="header">
+  <tr>
+    <td><a href="/">Home</a></td>
+    <td><a href="matchhistory">Match history</a></td>
+    <td><a href="decks">Deck stats</a></td>
+    <td><a href="opponents">Opponents stats</a></td>
+    <td><a href="settings">Settings</a></td>
+    <td><a href="about">About Mtganalyzer</a></td>
+  </tr>
+</table>
+<br/>
+<br/>
+
+<div class="settingsResponse">
+{% autoescape false %}
+    {{ pagecontent }}
+{% endautoescape %}
+</div>
+
+<form method="post" action="/settings">
+<table class="settingsTable">
+  <tr>
+    <td rowspan="2" class="settingsButton"><input type="submit" name="reload_btn" value="Run"></td>
+    <td class="settingsTitle">Reload log folder</td>
+  </tr>
+  <tr>
+    <td>Reloads the folder you indicated on startup.
+      <br/>
+      <br/>
+    </td>
+  </tr>
+
+  <tr>
+    <td rowspan="2" class="settingsButton"><input type="submit" name="delete_today_btn" value="Run"></td>
+    <td class="settingsTitle">Delete today's data</td>
+  </tr>
+  <tr>
+    <td>Delete data loaded and tagged with today's date (not everything is, but matches and match history are)
+      <br/>
+      <br/>
+    </td>
+  </tr>
+
+</table>
+</form>
+
+
+
+</body>

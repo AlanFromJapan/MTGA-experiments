@@ -61,13 +61,13 @@ def init():
 def homepage():
     stats = db.getGeneralStats()
 
-    return render_template("home01.html", pagename="MTGAnalyzer - home", stats=stats) # dbg=stats)
+    return render_template("home01.html", pagename="Home", stats=stats) # dbg=stats)
 
 
 
 @app.route('/about')
 def aboutPage():
-    return render_template("template01.html", pagename="MTGAnalyzer - About", pagecontent='''
+    return render_template("template01.html", pagename="About", pagecontent='''
 About MTGAnalyzer<br/>
 <br/>
 By AlanFromJapan / MIT license / Full source code here <a href="https://github.com/AlanFromJapan/MTGA-experiments">on Github</a>.<br/>
@@ -90,7 +90,7 @@ def matchHistoryPage():
 
     stats["winratio"] = "{0:.0f}".format( (100.0 * stats["win"] / stats["total"]) if not stats["total"] == 0 else 0 )
 
-    return render_template("history01.html", pagename="MTGAnalyzer - match history", matches=matches, stats=stats)
+    return render_template("history01.html", pagename="Match history", matches=matches, stats=stats)
 
 
 @app.route('/decks')
@@ -98,18 +98,28 @@ def decksPage():
     decksstats = db.getDeckStats()
     deckscolors = db.getDecksColorsStats()
 
-    return render_template("decksstats01.html", pagename="MTGAnalyzer - decks statistics", stats=decksstats, colors=deckscolors[0])
+    return render_template("decksstats01.html", pagename="Decks statistics", stats=decksstats, colors=deckscolors[0])
 
 
 
 @app.route('/opponents')
 def opponentsPage():
-    return render_template("template01.html", pagename="MTGAnalyzer - About", pagecontent='''TODO''')
+    return render_template("template01.html", pagename="Opponents", pagecontent='''TODO''')
 
 
-@app.route('/settings')
+@app.route('/settings', methods=['GET', 'POST'])
 def settingsPage():
-    return render_template("template01.html", pagename="MTGAnalyzer - About", pagecontent='''TODO''')
+    msg = ""
+    if request.method == 'POST':
+        #print(str(request.form))
+        if 'delete_today_btn' in request.form:
+            db.deleteTodaysData()
+            msg = "Deleted today's data."
+        if 'reload_btn' in request.form:
+            init()
+            msg = "Reloaded logs."
+            
+    return render_template("settings.html", pagename="Settings", pagecontent=msg)
 
 ########################################################################################
 ## Non-web related functions

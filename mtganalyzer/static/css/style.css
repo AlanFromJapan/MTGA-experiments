@@ -211,3 +211,31 @@ div.logobig {
     text-align:center;
     font-size: xx-small;
 }
+
+
+/*--------------------------------------------------------------------------------------------------------*/
+/* Settings */
+div.settingsResponse {
+    width: 100%;
+    text-align: center;
+}
+table.settingsTable {
+    /* border: solid 1px white; */
+
+    width:90%;
+    background-color: #262626;
+}
+.settingsButton {
+    width: 200px;
+    vertical-align: top;
+}
+.settingsButton input{
+    width: 200px;
+    height: 30px;
+}
+td.settingsTitle {
+    background-color: darkgray;
+    color: black;
+    font-weight: bold;
+}
+

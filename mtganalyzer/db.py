@@ -199,6 +199,13 @@ def getDecksColorsStats ():
 
 
 ######################################################################
+## Delete today's data
+#
+def deleteTodaysData ():
+    return __executeScriptAndReturn("deleteTodaysData.sql")
+
+
+######################################################################
 ## Executes a script and then a one liner (typically long script + read result)
 #
 def __executeScriptAndReturn (scriptFileName: str, returnSql : str = None):
