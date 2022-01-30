@@ -229,7 +229,7 @@ table.settingsTable {
     width: 200px;
     vertical-align: top;
 }
-.settingsButton input{
+.settingsButton button{
     width: 200px;
     height: 30px;
 }

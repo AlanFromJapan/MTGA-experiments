@@ -6,7 +6,8 @@ SELECT
 	(SELECT count(1) from DECK d WHERE d.MANA LIKE "%G%") as Greens,
 	(SELECT count(1) from DECK d WHERE d.MANA LIKE "%W%") as Whites,
 	(SELECT count(1) from DECK d WHERE d.MANA LIKE "%U%") as Blues,
-	(SELECT count(1) from DECK d WHERE d.MANA LIKE "%B%") as Blacks
+	(SELECT count(1) from DECK d WHERE d.MANA LIKE "%B%") as Blacks,
+	(SELECT count(1) from DECK d ) as TOTAL
 ;
 -- Final SELECT to return the results
 SELECT * FROM tmpStats;
