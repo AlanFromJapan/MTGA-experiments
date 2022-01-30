@@ -40,6 +40,13 @@
 <br/>
 <br/>
 
+Sort by: <select id="selOrder" name="selOrder" >
+  <option value="name">Name</option>
+  <option value="mana">Color</option>
+  <option value="winratio">Win ratio</option>
+  <option value="playcount">Most played</option>
+</select>
+
 {% for s in stats %}
 <table class="decksstats">
 <tr>
@@ -84,6 +91,24 @@
       element.innerHTML = element.innerHTML.replace("G", "<img src='images/G.png' alt='Green'/>");
   }
 
+  //Get the parameter to set the dropdown
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const ordr = urlParams.get('order');
+  const sel = document.getElementById("selOrder");
+  for (var i=0; i<sel.options.length; i++){
+    if (sel.options[i].value == ordr){
+        sel.options[i].selected = true;
+        break;
+    }
+  }
+  //THEN assign the callback for onchange event
+  sel.onchange = orderChange;
+
+  function orderChange(){
+    var sel = document.getElementById("selOrder");
+    window.location.href = "/decks?order=" + sel.options[sel.selectedIndex].value;
+  }
 
 </script>
 </body>

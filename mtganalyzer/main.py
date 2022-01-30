@@ -93,10 +93,20 @@ def matchHistoryPage():
     return render_template("history01.html", pagename="Match history", matches=matches, stats=stats)
 
 
-@app.route('/decks')
+@app.route('/decks', methods=['GET'])
 def decksPage():
     decksstats = db.getDeckStats()
     deckscolors = db.getDecksColorsStats()
+
+    #sorting
+    if not "order" in request.args or request.args["order"] == "name":
+        decksstats.sort(key=lambda x: x["DECK_NAME"].lower())
+    elif request.args["order"] == "mana":
+        decksstats.sort(key=lambda x: x["MANA"])
+    elif request.args["order"] == "winratio":
+        decksstats.sort(key=lambda x: x["WinRatioPercent"], reverse=True)
+    elif request.args["order"] == "playcount":
+        decksstats.sort(key=lambda x: x["TotalMatch"], reverse=True)
 
     return render_template("decksstats01.html", pagename="Decks statistics", stats=decksstats, colors=deckscolors[0])
 
