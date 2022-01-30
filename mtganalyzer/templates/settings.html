@@ -26,10 +26,10 @@
 {% endautoescape %}
 </div>
 
-<form method="post" action="/settings">
+<form id="theForm" method="post" action="/settings">
 <table class="settingsTable">
   <tr>
-    <td rowspan="2" class="settingsButton"><input type="submit" name="reload_btn" value="Run"></td>
+    <td rowspan="2" class="settingsButton"><button type="button" onClick="clickConfirm('reload_btn', 'Run', 'Confirm you want to RELOAD today\'s data?');"> <b>Reload</b> today's data</button></td>
     <td class="settingsTitle">Reload log folder</td>
   </tr>
   <tr>
@@ -40,7 +40,7 @@
   </tr>
 
   <tr>
-    <td rowspan="2" class="settingsButton"><input type="submit" name="delete_today_btn" value="Run"></td>
+    <td rowspan="2" class="settingsButton"><button type="button" onClick="clickConfirm('delete_today_btn', 'Run', 'Confirm you want to DELETE today\'s data?');"> <b>Delete</b> today's data</button></td>
     <td class="settingsTitle">Delete today's data</td>
   </tr>
   <tr>
@@ -54,5 +54,23 @@
 </form>
 
 
+<script type="text/javascript">
+  //Adds a confirmation popup before submitting the form
+function clickConfirm(pname, pvalue, pmessage="Sure ?") {
+  if (confirm(pmessage)){
+    var f = document.getElementById('theForm');
+
+    var hiddenField = document.createElement('input');
+    hiddenField.type = 'hidden';
+    hiddenField.name = pname;
+    hiddenField.value = pvalue;
+
+    f.appendChild(hiddenField);
+    f.submit();
+  }
+
+}
+
+</script>
 
 </body>
