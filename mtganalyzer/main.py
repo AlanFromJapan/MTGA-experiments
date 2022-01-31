@@ -107,6 +107,8 @@ def decksPage():
         decksstats.sort(key=lambda x: x["WinRatioPercent"], reverse=True)
     elif request.args["order"] == "playcount":
         decksstats.sort(key=lambda x: x["TotalMatch"], reverse=True)
+    elif request.args["order"] == "wincount":
+        decksstats.sort(key=lambda x: x["TotalWin"], reverse=True)
 
     return render_template("decksstats01.html", pagename="Decks statistics", stats=decksstats, colors=deckscolors[0])
 
