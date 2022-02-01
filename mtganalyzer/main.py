@@ -145,7 +145,7 @@ def scanOneFile (scanner, path):
         return
     
     print ("INFO: Scanning " + path)
-    mlist = scanner.scanFile(path)
+    mlist, goldAndGems = scanner.scanFile(path)
     for m in mlist:
         if m.deck != None:
             db.storeDeck(m.deck)
@@ -157,7 +157,7 @@ def scanOneFile (scanner, path):
         db.storeMatch(m)
     
     #and remember
-    db.markFileAsProcessed(path)
+    db.markFileAsProcessed(path, goldAndGems)
 
 ########################################################################################
 ## Main entry point

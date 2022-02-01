@@ -157,13 +157,14 @@ class MtgaLogScanner:
 
         STATE_START = "MATCH_START"
         STATE_END = "MATCH_END"
+        lastGoldAndGem = None
+
         #state machine: file is sequential (it's a log) so "what are we searching for" phases state machine
         #not pairing the matches (checking ID assuming that all started match are properly finished : will have to fix that later)
         stateMachine = STATE_START
         try:
             i = 1
 
-            lastGoldAndGem = None
             lastDeck = None
             lastMatch = None
 
@@ -208,5 +209,5 @@ class MtgaLogScanner:
         finally:
             fin.close()
 
-        return mlist
+        return mlist, lastGoldAndGem
 

@@ -72,13 +72,13 @@ def fileAlreadyProcessed (path):
 ######################################################################
 ## Records the file processing in the DB
 #
-def markFileAsProcessed (path):
+def markFileAsProcessed (path, goldAndGems = None):
     conn = sqlite3.connect(DB_FILE)
     try:
         conn.execute('''
-        INSERT INTO PROCESSING_HISTORY (FILE_NAME, PROCESS_DT) 
-        VALUES (?, ?);
-        ''', [os.path.basename(path), datetime.datetime.now()])
+        INSERT INTO PROCESSING_HISTORY (FILE_NAME, PROCESS_DT, CLOSING_GEM, CLOSING_GOLD) 
+        VALUES (?, ?, ?, ?);
+        ''', [os.path.basename(path), datetime.datetime.now(), None if goldAndGems is None else goldAndGems[1], None if goldAndGems is None else goldAndGems[0]])
 
         conn.commit()
     finally:

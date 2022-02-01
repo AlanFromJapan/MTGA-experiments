@@ -66,6 +66,17 @@ FROM
 	(SELECT * FROM MATCH WHERE DECK_ID IS NOT NULL ORDER BY MATCH_START DESC LIMIT 10) as m
 	join DECK d on m.DECK_ID = d.DECK_ID GROUP by m.deck_id order by count(m.deck_id) desc LIMIT 1
 ;
+INSERT INTO tmpStats
+SELECT 
+    "As of latest file, you have <span class='generalstatsHighlight'>" || printf("%,d", COALESCE(ph.CLOSING_GOLD, 0)) || " gold 🪙</span> and <span class='generalstatsHighlight'>" || printf("%,d", COALESCE(ph.CLOSING_GEM, 0)) || " gems 💎</span>." as OneLiner,
+    "GoldAndGems" as Item,
+    0 as Val,
+    0 as cnt
+FROM 
+	PROCESSING_HISTORY as ph 
+	ORDER BY PROCESS_DT DESC LIMIT 1
+;
+
 -- Final SELECT to return the results
 SELECT * FROM tmpStats;
 
