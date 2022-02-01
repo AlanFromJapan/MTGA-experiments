@@ -13,4 +13,11 @@ Start with:
 
 > python3 main.py *path-to-the-MTGA-log-files*
 
+# Pictures
+
+## Landing page
+
 ![Landing page](https://github.com/AlanFromJapan/MTGA-experiments/blob/main/mtganalyzer/static/images/mtganalyzer-front.jpg?raw=true)
+
+## Decks stats 
+![Decks page](https://github.com/AlanFromJapan/MTGA-experiments/blob/main/mtganalyzer/static/images/mtganalyzer-decks.jpg?raw=true)
