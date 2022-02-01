@@ -12,3 +12,5 @@ Make sure you set your MTGA application in mode [**"Detailed logs"**](https://mt
 Start with: 
 
 > python3 main.py *path-to-the-MTGA-log-files*
+
+![Landing page](https://github.com/AlanFromJapan/MTGA-experiments/blob/main/mtganalyzer/static/images/mtganalyzer-front.jpg?raw=true)
