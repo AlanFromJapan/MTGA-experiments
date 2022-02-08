@@ -27,7 +27,7 @@
     <tr><td>&nbsp;</td></tr>
     <tr>
       <td>
-      Total match scanned: {{ stats["total"] }} ❖ Win/Loss: {{ stats["win"] }}/{{ stats["total"] - stats["win"] }} ( {{stats["winratio"]}} %)
+      Shown matches count: {{ stats["total"] }} ❖ Win/Loss: {{ stats["win"] }}/{{ stats["total"] - stats["win"] }} ( {{stats["winratio"]}} %)
       </td>
     </tr>
     <tr><td>&nbsp;</td></tr>
@@ -37,6 +37,16 @@
 <br/>
 <br/>
 
+<div id="matchPagination">
+{% if hasLess %}
+<button type="button" onClick="window.location.href = 'matchhistory?curPage={{ pageNum }}&action=prev';">◀</button>
+{% endif %}
+ Matches {{ pageNum*pageLen +1 }} - {{ (pageNum +1)*pageLen }}
+{% if hasMore %}
+<button type="button" onClick="window.location.href = 'matchhistory?curPage={{ pageNum }}&action=next';">▶</button>
+{% endif %}
+
+</div>
 {% for m in matches %}
 
 <table class="matchhistory">

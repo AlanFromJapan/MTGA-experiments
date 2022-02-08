@@ -2,6 +2,14 @@ DROP TABLE IF EXISTS tmpStats;
 
 CREATE TEMPORARY TABLE tmpStats AS
 SELECT 
+    "You played a total of <span class='generalstatsHighlight'>" || COUNT(1) || "</span> match(es)." as OneLiner, 
+    "TotalPlay" as Item, 
+    Count(1) as Val, 
+    count(1) as cnt  
+FROM MATCH m 
+;
+INSERT INTO tmpStats
+SELECT 
     "Your most played non-bot opponent was <span class='generalstatsHighlight'>" || OPPONENT_NAME || "</span> with <span class='generalstatsHighlight'>" || CAST(count(Opponent_name) as varchar(10)) || "</span> match(es)." as OneLiner, 
     "MostPlayedDeck" as Item, 
     OPPONENT_NAME as Val, 

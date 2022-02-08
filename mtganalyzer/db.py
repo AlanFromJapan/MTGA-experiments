@@ -123,11 +123,15 @@ def saveDeckURL(d : MtgaDeck):
 ######################################################################
 ## Returns last match (match list)
 #
-def getMatchLatest (count: int = 10):
+def getMatchLatest (count: int = 10, offset: int = 0):
     conn = sqlite3.connect(DB_FILE)
     try:
         cur  = conn.cursor()
-        cur.execute("SELECT * FROM MATCH M JOIN DECK D ON M.deck_Id = D.deck_Id ORDER BY M.MATCH_START DESC LIMIT ?", [count])
+        cur.execute("""
+        SELECT * 
+        FROM MATCH M JOIN DECK D ON M.deck_Id = D.deck_Id 
+        ORDER BY M.MATCH_START DESC 
+        LIMIT ?, ?""", [offset, count])
 
         rows = cur.fetchall()
 

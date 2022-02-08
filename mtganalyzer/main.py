@@ -77,9 +77,22 @@ Don't sue me, go play MtGA instead.
 
 
 
-@app.route('/matchhistory')
+@app.route('/matchhistory', methods=['GET'])
 def matchHistoryPage():
-    matches = db.getMatchLatest(100)
+    PAGE_LEN = 15
+    offset = 0
+
+    if "curPage" in request.args :
+        offset = int(request.args["curPage"]) 
+    else:
+        offset = 0
+    if "action" in request.args :
+        if request.args["action"] == "prev":
+            offset = 0 if offset <= 0 else offset - 1 
+        elif request.args["action"] == "next":
+            offset = offset + 1
+    
+    matches = db.getMatchLatest(count=PAGE_LEN, offset=offset * PAGE_LEN)
     stats = dict()
     stats["total"] = 0
     stats["win"] = 0
@@ -90,7 +103,7 @@ def matchHistoryPage():
 
     stats["winratio"] = "{0:.0f}".format( (100.0 * stats["win"] / stats["total"]) if not stats["total"] == 0 else 0 )
 
-    return render_template("history01.html", pagename="Match history", matches=matches, stats=stats)
+    return render_template("history01.html", pagename="Match history", matches=matches, stats=stats, hasLess=offset != 0, hasMore=True, pageNum=offset, pageLen=PAGE_LEN)
 
 
 @app.route('/decks', methods=['GET'])
