@@ -153,38 +153,10 @@ def getMatchLatest (count: int = 10, offset: int = 0):
 ######################################################################
 ## Returns stats about decks
 #
-def getDeckStats (deckId = None):
-    conn = sqlite3.connect(DB_FILE)
-    try:
-        params = {"id" : deckId }
-        #get the results with column names and not only index https://docs.python.org/3/library/sqlite3.html#sqlite3.Connection.row_factory
-        conn.row_factory = sqlite3.Row
-        #in that order
-        cur  = conn.cursor()
-        cur.execute("""
-select d.*, 
-(SELECT COUNT(1) FROM MATCH m WHERE m.deck_id = d.deck_id) as TotalMatch,
-(SELECT COUNT(1) FROM MATCH m WHERE m.deck_id = d.deck_id AND m.RESULT = "Victory") as TotalWin,
-(SELECT COUNT(1) FROM MATCH m WHERE m.deck_id = d.deck_id AND m.RESULT = "Defeat") as TotalLoss,
-printf("%d", (SELECT AVG(strftime('%s', m.MATCH_END) - strftime('%s', m.MATCH_START)) FROM MATCH m WHERE m.deck_id = d.deck_id)) as AvgMatchLengthInSec,
-COALESCE(CAST(100.00 * (1.00 * (SELECT COUNT(1) FROM MATCH m WHERE m.deck_id = d.deck_id AND m.RESULT = "Victory")) / (1.00 * (SELECT COUNT(1) FROM MATCH m WHERE m.deck_id = d.deck_id)) as int), 0) as WinRatioPercent
+def getDeckStats ():
+    return __executeScriptAndReturn("getDecksStats.sql", "SELECT * FROM TMPDECKSTATS;")
 
-from DECK d
-WHERE :id IS NULL OR (:id IS NOT NULL AND d.deck_id = :id)   
-ORDER BY DECK_NAME ASC ;    
-        """, params)
-
-        res = []
-        for row in cur.fetchall():
-            #print(row["TotalMatch"])
-            res.append(dict_from_row(row))
-        
-        return res
-    finally:
-        conn.close()  
-
-def dict_from_row(row):
-    return dict(zip(row.keys(), row))       
+     
 
 
 
@@ -249,3 +221,7 @@ def __executeScriptAndReturn (scriptFileName: str, returnSql : str = None):
         return None
     finally:
         conn.close()  
+
+# Helper method for __executeScriptAndReturn()
+def dict_from_row(row):
+    return dict(zip(row.keys(), row))  

@@ -111,17 +111,21 @@ def decksPage():
     decksstats = db.getDeckStats()
     deckscolors = db.getDecksColorsStats()
 
-    #sorting
-    if not "order" in request.args or request.args["order"] == "name":
+    #sorting (default is by weigthed wins)
+    ordr = "winweight" if not "order" in request.args else request.args["order"]
+
+    if ordr == "name":
         decksstats.sort(key=lambda x: x["DECK_NAME"].lower())
-    elif request.args["order"] == "mana":
+    elif ordr == "mana":
         decksstats.sort(key=lambda x: x["MANA"])
-    elif request.args["order"] == "winratio":
+    elif ordr == "winratio":
         decksstats.sort(key=lambda x: x["WinRatioPercent"], reverse=True)
-    elif request.args["order"] == "playcount":
+    elif ordr == "playcount":
         decksstats.sort(key=lambda x: x["TotalMatch"], reverse=True)
-    elif request.args["order"] == "wincount":
+    elif ordr == "wincount":
         decksstats.sort(key=lambda x: x["TotalWin"], reverse=True)
+    elif ordr == "winweight":
+        decksstats.sort(key=lambda x: x["WeigthedRanking"], reverse=True)
 
     return render_template("decksstats01.html", pagename="Decks statistics", stats=decksstats, colors=deckscolors[0])
 
