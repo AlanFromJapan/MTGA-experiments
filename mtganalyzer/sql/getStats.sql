@@ -82,7 +82,10 @@ SELECT
     0 as cnt
 FROM 
 	PROCESSING_HISTORY as ph 
+WHERE 
+    ph.CLOSING_GEM IS NOT NULL AND ph.CLOSING_GOLD IS NOT NULL
 	ORDER BY PROCESS_DT DESC LIMIT 1
+    
 ;
 
 -- Final SELECT to return the results
