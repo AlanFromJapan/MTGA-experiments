@@ -52,7 +52,7 @@ Sort by: <select id="selOrder" name="selOrder" >
 {% for s in stats %}
 <table class="decksstats">
 <tr>
-  <td rowspan="4" class="decktile"><img src="{{ s['TILE_URL_SMALL'] }}" /></td>
+  <td rowspan="4" class="decktile"><a href="{{ s['TILE_URL_SMALL'].replace('/small/', '/normal/') }}" target="_blank"><img src="{{ s['TILE_URL_SMALL'] }}" /></a></td>
   <td class="deckname"><span class="name">{{ s['DECK_NAME'] }}</span><br/><span class="id">{{ s['DECK_ID'] }}</span></td>
   <td class="deckmana">{{ s['MANA'] }}</td>
 </tr>
