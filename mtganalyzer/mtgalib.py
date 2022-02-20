@@ -1,4 +1,4 @@
-from mtgaobjects import MtgaDeck, MtgaMatch
+from mtgaobjects import MtgaDeck, MtgaMatch, BLANK_TILE
 
 ##########################################################################
 ## Lib handling the additional functions like fetching visuals, etc. from external sources
@@ -30,13 +30,21 @@ def getImageURLFromArenaID (arenaId, size):
 
         if resp.ok:
             j = json.loads(resp.text)
-            cache_ArenaID2ImageURL[arenaId] = j["image_uris"][size]
+            #print("DBG: "+ resp.text)
+            if "image_uris" in j:
+                #single face card
+                #print ("DBG: single face")
+                cache_ArenaID2ImageURL[arenaId] = j["image_uris"][size]
+            else:
+                #multi face cards
+                #print ("DBG: multi face")
+                cache_ArenaID2ImageURL[arenaId] = j["card_faces"][0]["image_uris"][size]
             return cache_ArenaID2ImageURL[arenaId]
         else:
-            return "/images/blank-card.png" 
+            return BLANK_TILE 
     except:
         print ("WARN: couldn't get tile URL for ArenaID %s" % (arenaId))
-        return "/images/blank-card.png" 
+        return BLANK_TILE
 
 
 

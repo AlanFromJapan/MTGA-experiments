@@ -107,7 +107,7 @@ def storeDeck(d : MtgaDeck):
 ######################################################################
 ## Update a DECK tile's URL in DB
 #
-def saveDeckURL(d : MtgaDeck):
+def saveDeckTileURL(d : MtgaDeck):
     conn = sqlite3.connect(DB_FILE)
     try:
         conn.execute('''
@@ -145,7 +145,6 @@ def getMatchLatest (count: int = 10, offset: int = 0):
         return matches
     finally:
         conn.close()   
-    return False
 
 
 

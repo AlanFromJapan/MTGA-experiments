@@ -1,6 +1,9 @@
 import os
 from datetime import date, datetime
 
+BLANK_TILE="/images/blank-card.png"
+SIZE_TILE="small"
+
 class MtgaMatch:
     matchId = ""
     matchStart = datetime.min

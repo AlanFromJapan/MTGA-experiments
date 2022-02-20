@@ -6,9 +6,10 @@ from datetime import datetime
 import re
 import json
 import sys
+import db
 
-from mtgaobjects import MtgaDeck, MtgaMatch
-
+from mtgaobjects import MtgaDeck, MtgaMatch, BLANK_TILE, SIZE_TILE
+import mtgalib
         
 
 
@@ -210,4 +211,24 @@ class MtgaLogScanner:
             fin.close()
 
         return mlist, lastGoldAndGem
+
+
+    #------------------------------------------------------------------------------------------------------
+    # Refresh (attempts to) the tiles images from Scryfall for Decks with the generic blank image
+    #
+    def refreshDeckMissingTiles(self):
+        decks = db.getDeckStats ()
+        for deck in decks:
+            if deck["TILE_URL_SMALL"] == BLANK_TILE:
+                print("DBG: processing deck ID '"+ deck["DECK_NAME"] + "' with Tile ID " + deck["TILE_ARENAID"])
+                imgURL = mtgalib.getImageURLFromArenaID(deck["TILE_ARENAID"], SIZE_TILE)
+                if imgURL != BLANK_TILE:
+                    print("DBG: got a new URL "+ imgURL)
+                    d = MtgaDeck(None, None, None, None)
+                    d.deckId = deck["DECK_ID"]
+                    d.tileURL = imgURL
+                    db.saveDeckTileURL(d)
+                else:
+                    print("WARN: could not find new image for deck ID '"+ deck["DECK_NAME"] + "' with Tile ID " + deck["TILE_ARENAID"])
+
 
