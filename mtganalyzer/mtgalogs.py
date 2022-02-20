@@ -110,7 +110,7 @@ class MtgaLogScanner:
     # Returns Gold and Gems (could do also the wildcards, in the same message)
     #
     def extractGoldAndGems(self, l):
-        if "SealedTokens" in l and "1909" in l:
+        if "SealedTokens" in l and "1912" in l:
             #print ("DBG: " + l)
             go = -1
             ge = -1
