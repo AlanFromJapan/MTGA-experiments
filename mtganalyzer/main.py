@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from sqlite3.dbapi2 import paramstyle
-from flask import Flask, render_template, redirect, url_for, request, make_response
+from flask import Flask, render_template, redirect, url_for, request, make_response, send_file
 import os, sys
 import logging
 from logging.handlers import RotatingFileHandler
@@ -8,6 +8,7 @@ import re
 import werkzeug 
 import operator
 import time
+from io import BytesIO
 
 import config
 
@@ -15,7 +16,7 @@ from mtgaobjects import MtgaDeck, MtgaMatch, SIZE_TILE
 import mtgalib
 import mtgalogs
 import db
-
+import graphics
 
 ########################################################################################
 ## Flask vars
@@ -156,6 +157,22 @@ def settingsPage():
             scanner.refreshDeckMissingTiles()
             
     return render_template("settings.html", pagename="Settings", pagecontent=msg)
+
+
+
+
+@app.route('/deckWinLossHistory/<deckID>')
+def getImageDeckHistory(deckID):
+    #print("DBG: get histogram for " + deckID)
+    img = graphics.generateDeckHistory(deckID)
+    io_buf = BytesIO()
+    img.save(io_buf, "PNG")
+
+    #put back at start in case
+    io_buf.seek(0)
+
+    #return the in memory image
+    return send_file(io_buf, mimetype='image/png')
 
 ########################################################################################
 ## Non-web related functions
