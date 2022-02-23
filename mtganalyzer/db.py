@@ -150,11 +150,17 @@ def getMatchLatest (count: int = 10, offset: int = 0):
 
 
 ######################################################################
-## Returns stats about decks
+## Returns stats about ALL decks
 #
 def getDeckStats ():
     return __executeScriptAndReturn("getDecksStats.sql", "SELECT * FROM TMPDECKSTATS;")
 
+
+######################################################################
+## Returns win-loss history of ONE deck
+#
+def getDeckWinlossHistory (deckID : str):
+    return __executeScriptAndReturn("getDeckWinLossHistory.sql", "SELECT * FROM tmpStats;", {"DeckID" : deckID})
      
 
 
@@ -183,7 +189,7 @@ def deleteTodaysData ():
 ######################################################################
 ## Executes a script and then a one liner (typically long script + read result)
 #
-def __executeScriptAndReturn (scriptFileName: str, returnSql : str = None):
+def __executeScriptAndReturn (scriptFileName: str, returnSql : str = None, params : dict = {}):
     conn = sqlite3.connect(DB_FILE)
     try:
         #get the results with column names and not only index https://docs.python.org/3/library/sqlite3.html#sqlite3.Connection.row_factory
@@ -196,6 +202,12 @@ def __executeScriptAndReturn (scriptFileName: str, returnSql : str = None):
 
         content = open(scriptFile, "rt").read()
         #print("DBG content: " + content)
+
+        #apply params
+        for key in params:
+            content = content.replace("@@" + key, params[key])
+
+        #print("DBG UPDATED content: " + content)
 
         #executes the script but does not return content of the final "SELECT", have to do it after with an regular execute
         cur.executescript(content)
