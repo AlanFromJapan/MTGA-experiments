@@ -1,5 +1,6 @@
 __pycache__
 MTGA_Logs/
 MTGA_Logs
+WIN_MTGA_Logs
 *~
 config.py
