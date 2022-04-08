@@ -27,6 +27,8 @@ def generateDeckHistory (deckID:str, historyWinLoss):
     l = (IMG_W - HIST_W) /2
     l = l + BAR_W * (0 if len(historyWinLoss) >= DAYS_COUNT else DAYS_COUNT- len(historyWinLoss) )
 
+    lineLast = [0,0]
+
     for triplet in historyWinLoss[-DAYS_COUNT:]:
         if triplet["VictoryCount"] > 0:
             d.rectangle( (l, IMG_H/2 - BAR_H_UNIT * triplet["VictoryCount"], l + BAR_W, IMG_H/2), 
@@ -35,7 +37,16 @@ def generateDeckHistory (deckID:str, historyWinLoss):
         if triplet["DefeatCount"] > 0:
             d.rectangle( (l, IMG_H/2 + BAR_H_UNIT * triplet["DefeatCount"], l + BAR_W, IMG_H/2), 
             fill=(255,70,70),
-            outline=None )   
+            outline=None )
+
+        newPoint = [l + BAR_W /2 +1, IMG_H/2 + (triplet["DefeatCount"] - triplet["VictoryCount"]) * BAR_H_UNIT]
+        if lineLast[0] != 0:
+            #not first : draw
+            d.line( (lineLast[0], lineLast[1], newPoint[0], newPoint[1]), fill=(0,0,0), width=2, joint="curve")
+        
+        #and always store latest
+        lineLast = newPoint
+
         l = l + BAR_W + 2
 
     #d.text((10,10), "Hello World", fill=(255,0,0))
