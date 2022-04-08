@@ -164,7 +164,10 @@ def settingsPage():
 @app.route('/deckWinLossHistory/<deckID>')
 def getImageDeckHistory(deckID):
     #print("DBG: get histogram for " + deckID)
-    img = graphics.generateDeckHistory(deckID)
+    histWinLoss = db.getDeckWinlossHistory(deckID)
+    #print(histWinLoss)
+
+    img = graphics.generateDeckHistory(deckID, histWinLoss)
     io_buf = BytesIO()
     img.save(io_buf, "PNG")
 

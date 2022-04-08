@@ -41,7 +41,7 @@
 <br/>
 
 Sort by: <select id="selOrder" name="selOrder" >
-  <option value="winweight">Weighted win ratio</option>
+  <option value="winweight">Weighted win ratio</option> 
   <option value="name">Name</option>
   <option value="mana">Color</option>
   <option value="winratio">Win ratio</option>
@@ -61,13 +61,14 @@ Sort by: <select id="selOrder" name="selOrder" >
   <td>Average match duraction (sec): {{ s['AvgMatchLengthInSec'] }}</td>
 </tr>
 <tr>
-  <td colspan="2">Total win: {{ s['TotalWin'] }} (ratio: 
+  <td>Total win: {{ s['TotalWin'] }} (ratio: 
     {% if s['WinRatioPercent'] > 50 %}
     <span class="winnerdeck">{{ s['WinRatioPercent'] }}</span>
     {% else %}
     {{ s['WinRatioPercent'] }}
     {% endif %}
     %)</td>
+  <td><img src="/deckWinLossHistory/{{ s['DECK_ID'] }}"></td>
 </tr>
 <tr>
   <td colspan="2">Total loss: {{ s['TotalLoss'] }}</td>
